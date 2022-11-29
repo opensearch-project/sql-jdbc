@@ -24,10 +24,6 @@ jobs:
           - 11
           - 17
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: sql-jdbc
-
     steps:
     - uses: actions/checkout@v3
 
