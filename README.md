@@ -2,6 +2,16 @@
 
 This is the driver for JDBC connectivity to a cluster running with OpenSearch SQL support.
 
+
+### JDBC Driver
+
+|       |                                                 |
+| ----- | ----------------------------------------------- |
+| Build | [![JDBC CI][jdbc-build-badge]][jdbc-build-link] |
+
+[jdbc-build-badge]: https://github.com/opensearch-project/sql/actions/workflows/sql-jdbc-test-and-build-workflow.yml/badge.svg
+[jdbc-build-link]: https://github.com/opensearch-project/sql/actions/workflows/sql-jdbc-test-and-build-workflow.yml
+
 ## Specifications
 
 The driver is compatible with JDBC 4.2 specification and requires a minimum of Java 8.
