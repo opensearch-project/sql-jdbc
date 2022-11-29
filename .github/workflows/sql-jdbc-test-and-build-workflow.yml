@@ -6,7 +6,7 @@ on:
     branches-ignore:
       - 'dependabot/**'
     paths:
-      - 'sql-jdbc/**'
+      - '.'
       - '.github/workflows/sql-jdbc-test-and-build-workflow.yml'
 
 jobs:
