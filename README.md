@@ -513,7 +513,7 @@ Please refer to the [documentation](https://docs-beta.opensearch.org/) for detai
 
 ## Code of Conduct
 
-This project has adopted an [Open Source Code of Conduct](./CODE_OF_CONDUCT.md).
+This project has adopted an [Open Source Code of Conduct](CODE_OF_CONDUCT.md).
 
 
 ## Security issue notifications
@@ -523,9 +523,9 @@ If you discover a potential security issue in this project we ask that you notif
 
 ## Licensing
 
-See the [LICENSE](./LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
+See the [LICENSE](LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
 
 ## Copyright
 
-Copyright OpenSearch Contributors. See [NOTICE](./NOTICE) for details.
+Copyright OpenSearch Contributors. See [NOTICE](NOTICE) for details.
 
