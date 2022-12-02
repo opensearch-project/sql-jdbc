@@ -1,0 +1,5 @@
+add maven jdbc publish workflow:
+    https://github.com/opensearch-project/sql/pull/957
+    https://github.com/opensearch-project/opensearch-build/issues/2505
+    https://github.com/opensearch-project/opensearch-build/issues/2692
+

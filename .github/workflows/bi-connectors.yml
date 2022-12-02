@@ -1,0 +1,25 @@
+name: Build connectors for BI tools
+
+on:
+  pull_request:
+  push:
+    paths:
+      - 'bi-connectors/TableauConnector/**'
+      - '.github/workflows/bi-connectors.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Pack Tableau JDBC connector
+      id: pack-tableau-jdbc
+      run: |
+        zip -r opensearch_sql_jdbc.taco . -x *.taco
+      working-directory: bi-connectors/TableauConnector/src
+    - name: Upload Tableau JDBC connector
+      if: steps.pack-tableau-jdbc.outcome == 'success'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TableauConnectors
+        path: bi-connectors/TableauConnector/src/opensearch_sql_jdbc.taco
