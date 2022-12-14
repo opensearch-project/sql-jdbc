@@ -1,3 +1,5 @@
+<img src="https://opensearch.org/assets/img/opensearch-logo-themed.svg" height="64px">
+
 ## OpenSearch - JDBC
 
 This is the driver for JDBC connectivity to a cluster running with OpenSearch SQL support.
