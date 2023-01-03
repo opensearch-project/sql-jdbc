@@ -347,14 +347,18 @@ public class ResultSetImpl implements ResultSet, JdbcWrapper, LoggingSource {
     public Time getTime(int columnIndex) throws SQLException {
         log.debug(() -> logEntry("getTime (%d)", columnIndex));
         checkCursorOperationPossible();
-        Time value = getTimeX(columnIndex);
+        Time value = getTimeX(columnIndex, null);
         log.debug(() -> logExit("getTime", value));
         return value;
     }
 
-    private Time getTimeX(int columnIndex) throws SQLException {
-        // TODO - add/check support
-        return getObjectX(columnIndex, Time.class);
+    private Time getTimeX(int columnIndex, Calendar calendar) throws SQLException {
+        Map<String, Object> conversionParams = null;
+        if (calendar != null) {
+            conversionParams = new HashMap<>();
+            conversionParams.put("calendar", calendar);
+        }
+        return getObjectX(columnIndex, Time.class, conversionParams);
     }
 
     @Override
@@ -494,7 +498,7 @@ public class ResultSetImpl implements ResultSet, JdbcWrapper, LoggingSource {
     public Time getTime(String columnLabel) throws SQLException {
         log.debug(() -> logEntry("getTime (%s)", columnLabel));
         checkCursorOperationPossible();
-        Time value = getTimeX(getColumnIndex(columnLabel));
+        Time value = getTimeX(getColumnIndex(columnLabel), null);
         log.debug(() -> logExit("getTime", value));
         return value;
     }
@@ -1071,14 +1075,22 @@ public class ResultSetImpl implements ResultSet, JdbcWrapper, LoggingSource {
 
     @Override
     public Time getTime(int columnIndex, Calendar cal) throws SQLException {
-        // TODO - implement?
-        return null;
+        log.debug(() -> logEntry("getTime (%d, %s)", columnIndex,
+                cal == null ? "null" : "Calendar TZ= " + cal.getTimeZone()));
+        checkCursorOperationPossible();
+        Time value = getTimeX(columnIndex, cal);
+        log.debug(() -> logExit("getTime", value));
+        return value;
     }
 
     @Override
     public Time getTime(String columnLabel, Calendar cal) throws SQLException {
-        // TODO - implement?
-        return null;
+        log.debug(() -> logEntry("getTime (%s, %s)", columnLabel,
+                cal == null ? "null" : "Calendar TZ= " + cal.getTimeZone()));
+        checkCursorOperationPossible();
+        Time value = getTimeX(getColumnIndex(columnLabel), cal);
+        log.debug(() -> logExit("getTime", value));
+        return value;
     }
 
     @Override
