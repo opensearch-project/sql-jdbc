@@ -31,7 +31,7 @@ pipeline {
                 [key: 'VERSION', value: '$.ref', regexpFilter: 'refs/tags/v' ],
             ],
             tokenCredentialId: 'jenkins-sql-jdbc-generic-webhook-token',
-            causeString: 'A tag was cut on opensearch-project/sql repository causing this workflow to run',
+            causeString: 'A tag was cut on opensearch-project/sql-jdbc repository causing this workflow to run',
             printContributedVariables: false,
             printPostContent: false,
             regexpFilterText: '$ref',
@@ -46,14 +46,12 @@ pipeline {
             steps {
                 // checkout the commit
                 checkout([
-                    $class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/opensearch-project/sql.git']],
+                    $class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/opensearch-project/sql-jdbc.git']],
                     branches: [[name: "$ref"]]
                         ])
 
-                dir('sql-jdbc') {
-                    // publish maven artifacts
-                    sh('./gradlew --no-daemon publishPublishMavenPublicationToLocalRepoRepository')
-                }
+                // publish maven artifacts
+                sh('./gradlew --no-daemon publishPublishMavenPublicationToLocalRepoRepository')
             }
         }
         stage('Sign') {

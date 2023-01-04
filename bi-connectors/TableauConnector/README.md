@@ -1,6 +1,6 @@
 ## Connector Download
 
-The Tableau connector is available to download from the automated CI workflow: [link](https://github.com/opensearch-project/sql/actions/workflows/bi-connectors.yml).
+The Tableau connector is available to download from the automated CI workflow: [link](https://github.com/opensearch-project/sql-jdbc/actions/workflows/bi-connectors.yml).
 The release snapshot is also available [here](opensearch_sql_jdbc.taco).
 
 ## Connector Install
