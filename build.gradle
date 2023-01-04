@@ -2,7 +2,6 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 
 buildscript {
@@ -22,7 +21,7 @@ plugins {
     id 'signing'
 }
 
-group 'org.opensearch.driver'
+group 'org.opensearch.client'
 
 // keep version in sync with version in Driver source
 version '2.0.0.0'
@@ -47,41 +46,21 @@ repositories {
 
 dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "2.13.3"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "2.13.4.2"
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.452'
 
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.3.1')
     testImplementation('org.junit.jupiter:junit-jupiter-params:5.3.1')
-    testImplementation('com.github.tomakehurst:wiremock:2.27.2')
+    testImplementation('com.github.tomakehurst:wiremock-jre8-standalone:2.34.0')
     testImplementation('org.mockito:mockito-core:2.23.0')
     testImplementation('org.junit.jupiter:junit-jupiter-engine:5.3.1')
     testImplementation('org.junit-pioneer:junit-pioneer:0.3.0')
-    testImplementation('org.eclipse.jetty:jetty-server:9.2.24.v20180105')
+    testImplementation('org.eclipse.jetty:jetty-server:9.4.48.v20220622')
 
-    // Enforce wiremock to use latest guava and json-smart
+    // Enforce wiremock to use latest guava
     testImplementation('com.google.guava:guava:31.1-jre')
-    testImplementation('net.minidev:json-smart:2.4.8')
 
     testRuntimeOnly('org.slf4j:slf4j-simple:1.7.25') // capture WireMock logging
-
-    // JDBC drivers for comparison test. Somehow Apache Derby throws security permission exception.
-    testImplementation fileTree('/build/libs') {
-        include '*.jar'
-        builtBy 'compileJdbc'
-    }
-    testImplementation group: 'com.h2database', name: 'h2', version: '2.1.210'
-    testImplementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
-    testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
-}
-
-task compileJdbc(type: Exec) {
-    if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows()) {
-        commandLine './gradlew.bat', 'build'
-        commandLine './gradlew.bat', 'shadowJar'
-    } else {
-        commandLine './gradlew', 'build'
-        commandLine './gradlew', 'shadowJar'
-    }
 }
 
 tasks.withType(JavaCompile) {
@@ -89,7 +68,7 @@ tasks.withType(JavaCompile) {
 }
 
 static def getShadowPath(String path) {
-    return 'org.opensearch.sql.jdbc.shadow.' + path
+    return 'com.amazonaws.opensearch.sql.jdbc.shadow.' + path
 }
 
 shadowJar {
@@ -107,7 +86,10 @@ shadowJar {
     exclude 'META-INF/NOTICE*'
     exclude 'META-INF/DEPENDENCIES'
 
-    relocate 'com.amazonaws', getShadowPath('com.amazonaws')
+    relocate('com.amazonaws', getShadowPath('com.amazonaws')) {
+        exclude 'com.amazonaws.opensearch.*/**'
+    }
+
     relocate 'org.apache', getShadowPath('org.apache')
     relocate 'org.joda', getShadowPath('org.joda')
     relocate 'com.fasterxml', getShadowPath('com.fasterxml')
@@ -115,6 +97,7 @@ shadowJar {
 }
 
 test {
+    systemProperty("opensearch_jdbc_version", version);
     useJUnitPlatform()
 }
 
@@ -136,59 +119,47 @@ publishing {
             artifact javadocJar
 
             pom {
-                name = "OpenSearch SQL JDBC Driver"
-                packaging = "jar"
-                url = "https://github.com/opensearch-project/sql/sql-jdbc"
-                description = "OpenSearch SQL JDBC driver"
-                scm {
-                    connection = "scm:git@github.com:opensearch-project/sql.git"
-                    developerConnection = "scm:git@github.com:opensearch-project/sql.git"
-                    url = "git@github.com:opensearch-project/sql.git"
+              name = "OpenSearch SQL JDBC Driver"
+              packaging = "jar"
+              url = "https://github.com/opensearch-project/sql"
+              description = "OpenSearch SQL JDBC driver"
+              scm {
+                connection = "scm:git@github.com:opensearch-project/sql.git"
+                developerConnection = "scm:git@github.com:opensearch-project/sql.git"
+                url = "git@github.com:opensearch-project/sql.git"
+              }
+              licenses {
+                license {
+                  name = "The Apache License, Version 2.0"
+                  url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                 }
-                licenses {
-                    license {
-                        name = "The Apache License, Version 2.0"
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                    }
+              }
+              developers {
+                developer {
+                  id = "amazonwebservices"
+                  organization = "Amazon Web Services"
+                  organizationUrl = "https://aws.amazon.com"
                 }
-                developers {
-                    developer {
-                        name = 'OpenSearch'
-                        url = 'https://github.com/opensearch-project/sql'
-                    }
-                }
-            }
-        }
-        publishMaven(MavenPublication) { publication ->
-            from components.java
-
-            pom {
-                name = "OpenSearch SQL JDBC Driver"
-                packaging = "jar"
-                url = "https://github.com/opensearch-project/sql/sql-jdbc"
-                description = "OpenSearch SQL JDBC driver"
-                scm {
-                    connection = "scm:git@github.com:opensearch-project/sql.git"
-                    developerConnection = "scm:git@github.com:opensearch-project/sql.git"
-                    url = "git@github.com:opensearch-project/sql.git"
-                }
-                licenses {
-                    license {
-                        name = "The Apache License, Version 2.0"
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                    }
-                }
-                developers {
-                    developer {
-                        name = 'OpenSearch'
-                        url = 'https://github.com/opensearch-project/sql'
-                    }
-                }
+              }
             }
         }
     }
 
     repositories {
+        maven {
+            name = "internal-snapshots"
+            url = "s3://snapshots.opendistroforelasticsearch.amazon.com/maven"
+            authentication {
+                awsIm(AwsImAuthentication) // load from EC2 role or env var
+            }
+        }
+        maven {
+            name = "internal-releases"
+            url = "s3://artifacts.opendistroforelasticsearch.amazon.com/maven"
+            authentication {
+                awsIm(AwsImAuthentication) // load from EC2 role or env var
+            }
+        }
         maven {
             name = "sonatype-staging"
             url "https://aws.oss.sonatype.org/service/local/staging/deploy/maven2"
@@ -196,10 +167,6 @@ publishing {
                 username project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
                 password project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
             }
-        }
-        maven {
-            name = "localRepo"
-            url "${project.buildDir}/repository"
         }
     }
 
@@ -233,7 +200,5 @@ jacocoTestCoverageVerification {
         }
     }
 }
-
-
 
 check.dependsOn jacocoTestCoverageVerification
