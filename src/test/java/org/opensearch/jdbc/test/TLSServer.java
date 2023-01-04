@@ -70,7 +70,7 @@ public class TLSServer {
         ServerConnector httpsConnector = null;
 
         // setup ssl
-        SslContextFactory sslContextFactory = new SslContextFactory();
+        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setKeyStorePath(keyStorePath);
         sslContextFactory.setKeyStorePassword(keyStorePassword);
         sslContextFactory.setKeyStoreType(keyStoreType);
@@ -132,8 +132,6 @@ public class TLSServer {
                 connectionFactories
         );
         connector.setPort(port);
-        connector.setStopTimeout(0);
-        connector.getSelectorManager().setStopTimeout(0);
         connector.setHost(bindAddress);
 
         return connector;
