@@ -18,8 +18,7 @@ The driver is compatible with JDBC 4.2 specification and requires a minimum of J
 
 ## BI Tool Connectors
 
-* [Power BI Desktop](../bi-connectors/PowerBIConnector/README.md)
-* [Tableau Desktop](../bi-connectors/TableauConnector/README.md)
+* [Tableau Desktop](bi-connectors/TableauConnector/README.md)
 
 ## Download and Installation
 
@@ -519,7 +518,7 @@ The driver is built as a shadow jar so that its dependencies are bundled within 
 
 ## Documentation
 
-Please refer to the [documentation](https://docs-beta.opensearch.org/) for detailed information on installing and configuring opendistro-elasticsearch-security plugin.
+Please refer to the [documentation](https://opensearch.org/docs/latest/) for detailed information on installing and configuring OpenSearch.
 
 ## Code of Conduct
 

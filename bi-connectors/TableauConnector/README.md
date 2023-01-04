@@ -8,10 +8,10 @@ The release snapshot is also available [here](opensearch_sql_jdbc.taco).
 1. Put connector `taco` file into
   * Windows: `C:\Users\%USERNAME%\Documents\My Tableau Repository\Connectors`;
   * MacOS: `~/Documents/My Tableau Repository/Connectors`.
-2. Put OpenSearch `JDBC` [driver](../../sql-jdbc/README.md) (`jar` file) into
+1. Put OpenSearch `JDBC` [driver](../../README.md) (`jar` file) into
   * Windows: `C:\Program Files\Tableau\Drivers`;
   * MacOS: `~/Library/Tableau/Drivers`.
-3. Run `Tableau Desktop` with command line flag `-DDisableVerifyConnectorPluginSignature=true`:
+1. Run `Tableau Desktop` with command line flag `-DDisableVerifyConnectorPluginSignature=true`:
   * Windows: `"C:\Program Files\Tableau\Tableau 2022.1\bin\tableau.exe" -DDisableVerifyConnectorPluginSignature=true`;
   * MacOS: `open -n /Applications/Tableau\ Desktop\ 2022.1.app --args -DDisableVerifyConnectorPluginSignature=true`.    
 Adjust the command line accoring to the Tableau version you have. You can create a shortcut or a script to simplify this step.
@@ -29,4 +29,4 @@ Test pass rate is 669/837 (80%).
 ## See also
 
 * [Connector user manual for Tableau Desktop](tableau_support.md)
-* JDBC Driver user manual [describes](../../sql-jdbc/docs/tableau.md) how to use the `JDBC` driver without the connector
+* JDBC Driver user manual [describes](../../docs/tableau.md) how to use the `JDBC` driver without the connector
