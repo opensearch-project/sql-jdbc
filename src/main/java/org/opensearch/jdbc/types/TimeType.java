@@ -8,7 +8,14 @@ package org.opensearch.jdbc.types;
 
 import java.sql.SQLException;
 import java.sql.Time;
-import java.time.LocalTime;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 
 public class TimeType implements TypeHelper<Time>{
@@ -24,41 +31,56 @@ public class TimeType implements TypeHelper<Time>{
     if (value == null) {
       return null;
     }
+    Calendar calendar = conversionParams != null ? (Calendar) conversionParams.get("calendar") : null;
     if (value instanceof Time) {
-      return asTime((Time) value);
+      return (Time) value;
     } else if (value instanceof String) {
-      return asTime((String) value);
+      return asTime((String) value, calendar);
     } else if (value instanceof Number) {
-      return this.asTime((Number) value);
+      return asTime((Number) value);
     } else {
       throw objectConversionException(value);
     }
   }
 
-  public Time asTime(Time value) {
-    return localTimetoSqlTime(value.toLocalTime());
-  }
+  public Time asTime(String value, Calendar calendar) {
+    Time time;
+    LocalDateTime localDateTime;
 
-  public Time asTime(String value) throws SQLException {
-    return localTimetoSqlTime(toLocalTime(value));
-  }
+    try {
+      TemporalAccessor temporal = DateTimeFormatter
+              .ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+              .parse(value);
 
-  private Time localTimetoSqlTime(LocalTime localTime) {
-    return new Time(localTime.getHour(), localTime.getMinute(), localTime.getSecond());
+      localDateTime = LocalDateTime.from(temporal);
+      time = Time.valueOf(localDateTime.toLocalTime());
+    } catch (DateTimeParseException exception) {
+      time = Time.valueOf(value);
+    }
+
+    if (calendar == null) {
+      return time;
+    }
+
+    localDateTime = time.toLocalTime().atDate(LocalDate.now());
+
+    return localDateTimeToTime(localDateTime, calendar);
   }
 
   public Time asTime(Number value) {
     return new Time(value.longValue());
   }
 
-  private LocalTime toLocalTime(String value) throws SQLException {
-    if (value == null)
-      throw stringConversionException(value, null);
-    return LocalTime.parse(value);
-  }
-
   @Override
   public String getTypeName() {
     return "Time";
+  }
+
+  private Time localDateTimeToTime(LocalDateTime ldt, Calendar calendar) {
+    calendar.set(ldt.getYear(), ldt.getMonthValue()-1, ldt.getDayOfMonth(),
+            ldt.getHour(), ldt.getMinute(), ldt.getSecond());
+    calendar.set(Calendar.MILLISECOND, ldt.getNano()/1000000);
+
+    return new Time(new Timestamp(calendar.getTimeInMillis()).getTime());
   }
 }
