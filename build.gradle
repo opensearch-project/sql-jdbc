@@ -161,6 +161,8 @@ publishing {
         }
         publishMaven(MavenPublication) { publication ->
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
 
             pom {
                 name = "OpenSearch SQL JDBC Driver"
