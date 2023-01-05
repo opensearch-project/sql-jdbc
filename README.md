@@ -101,7 +101,7 @@ Code samples to open a connection for some typical scenarios are given below:
 
 * Connect to localhost on port 9200 with no authentication over a plain connection
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -120,7 +120,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with no authentication
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -139,7 +139,7 @@ con.close();
 
 or,
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -161,7 +161,7 @@ con.close();
 
 * Connect to a remote host with HTTP Basic authentication over an SSL/TLS connection on the default SSL/TLS port. Note - if a username and password are provided and `auth` property is not provided, basic auth is implicitly used.
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -182,7 +182,7 @@ con.close();
 
 or,
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -206,7 +206,7 @@ con.close();
 
 * Connect to a remote host with HTTP Basic authentication over an SSL/TLS connection, allowing any self-signed certificate and optionally turning off hostname verification. This may be useful for a dev/test setup.
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -235,8 +235,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with AWS Sig V4 authentication. The driver will determine the credentials used to sign the request just like the standard aws-sdk i.e. in standard directories, environment variables etc.
 
-
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -252,9 +251,10 @@ Statement st = con.createStatement();
 // close connection
 con.close();
 ```
+
 or,
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -276,7 +276,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with AWS Sig V4 authentication, explicitly specifying the AWSCredentialProvider to use
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -298,7 +298,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with AWS Sig V4 authentication, explicitly specifying the region to use in the request signing.
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -317,7 +317,7 @@ con.close();
 
 or,
 
-```
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -344,7 +344,7 @@ The driver also provides a javax.sql.DataSource implementation via the `org.open
 
 * Connect to localhost on port 9200 with no authentication over a plain connection
 
-```
+```java
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.sql.DataSource;
@@ -369,7 +369,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with no authentication
 
-```
+```java
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.sql.DataSource;
@@ -394,7 +394,7 @@ con.close();
 
 * Connect to a remote host with HTTP Basic authentication over an SSL/TLS connection on the default SSL/TLS port.
 
-```
+```java
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.sql.DataSource;
@@ -419,8 +419,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with AWS Sig V4 authentication. The driver will determine the credentials used to sign the request just like the standard aws-sdk i.e. in standard directories, environment variables etc.
 
-
-```
+```java
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.sql.DataSource;
@@ -445,7 +444,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with AWS Sig V4 authentication, explicitly specifying the AWSCredentialProvider to use
 
-```
+```java
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.sql.DataSource;
@@ -471,7 +470,7 @@ con.close();
 
 * Connect to a remote host on default SSL port with AWS Sig V4 authentication, explicitly specifying the region to use in the request signing.
 
-```
+```java
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.sql.DataSource;
@@ -524,11 +523,9 @@ Please refer to the [documentation](https://opensearch.org/docs/latest/) for det
 
 This project has adopted an [Open Source Code of Conduct](CODE_OF_CONDUCT.md).
 
-
 ## Security issue notifications
 
 If you discover a potential security issue in this project we ask that you notify AWS/Amazon Security via our [vulnerability reporting page](http://aws.amazon.com/security/vulnerability-reporting/). Please do **not** create a public GitHub issue.
-
 
 ## Licensing
 
