@@ -19,7 +19,7 @@ Given the current major release of 1.0, projects in this organization maintain t
 * **1.x**: The next _minor_ release. Once a change is merged into `main`, decide whether to backport it to `1.x`.
 * **1.0**: The _current_ release. In between minor releases, only hotfixes (e.g. security) are backported to `1.0`.
 
-Label PRs with the next major version label (e.g. `v2.0.0`) and merge changes into `main`. Label PRs that you believe need to be backported as `backport 1.x` and `backport 1.0`. Backport PRs by checking out the versioned branch, cherry-pick changes and open a PR against each target backport branch.
+Label PRs with the next major version label (e.g. `v2.0.0.0`) and merge changes into `main`. Label PRs that you believe need to be backported as `backport 1.x` and `backport 1.0`. Backport PRs by checking out the versioned branch, cherry-pick changes and open a PR against each target backport branch.
 
 ### Feature Branches
 
@@ -33,8 +33,8 @@ Repositories create consistent release labels, such as `v1.0.0`, `v1.1.0` and `v
 
 The release process is standard across repositories in this org and is run by a release manager volunteering from amongst [maintainers](MAINTAINERS.md).
 
-1. Create a tag, e.g. 1.0.0, and push it to this GitHub repository.
+1. Create a tag, e.g. 1.0.0.0, and push it to this GitHub repository.
 1. The [release-drafter.yml](.github/workflows/release-drafter.yml) will be automatically kicked off and a draft release will be created.
 1. This draft release triggers the [jenkins release workflow](https://build.ci.opensearch.org/job/sql-jdbc-release) as a result of which the driver is released on [maven central](https://search.maven.org/search?q=org.opensearch.driver). Please note that the release workflow is triggered only if created release is in draft state.
 1. Once the above release workflow is successful, the drafted release on GitHub is published automatically.
-1. Increment "version" in [build.gradle](./build.gradle) to the next iteration, e.g. v2.1.1. See [example](https://github.com/opensearch-project/sql-jdbc/pull/11).
+1. Increment "version" in [build.gradle](./build.gradle) to the next iteration, e.g. 1.0.0.1 See [example](https://github.com/opensearch-project/sql-jdbc/pull/11).
