@@ -138,12 +138,12 @@ publishing {
             pom {
                 name = "OpenSearch SQL JDBC Driver"
                 packaging = "jar"
-                url = "https://github.com/opensearch-project/sql/sql-jdbc"
+                url = "https://github.com/opensearch-project/sql-jdbc"
                 description = "OpenSearch SQL JDBC driver"
                 scm {
-                    connection = "scm:git@github.com:opensearch-project/sql.git"
-                    developerConnection = "scm:git@github.com:opensearch-project/sql.git"
-                    url = "git@github.com:opensearch-project/sql.git"
+                    connection = "scm:git@github.com:opensearch-project/sql-jdbc.git"
+                    developerConnection = "scm:git@github.com:opensearch-project/sql-jdbc.git"
+                    url = "git@github.com:opensearch-project/sql-jdbc.git"
                 }
                 licenses {
                     license {
@@ -154,7 +154,7 @@ publishing {
                 developers {
                     developer {
                         name = 'OpenSearch'
-                        url = 'https://github.com/opensearch-project/sql'
+                        url = 'https://github.com/opensearch-project/sql-jdbc'
                     }
                 }
             }
@@ -167,12 +167,12 @@ publishing {
             pom {
                 name = "OpenSearch SQL JDBC Driver"
                 packaging = "jar"
-                url = "https://github.com/opensearch-project/sql/sql-jdbc"
+                url = "https://github.com/opensearch-project/sql-jdbc"
                 description = "OpenSearch SQL JDBC driver"
                 scm {
-                    connection = "scm:git@github.com:opensearch-project/sql.git"
-                    developerConnection = "scm:git@github.com:opensearch-project/sql.git"
-                    url = "git@github.com:opensearch-project/sql.git"
+                    connection = "scm:git@github.com:opensearch-project/sql-jdbc.git"
+                    developerConnection = "scm:git@github.com:opensearch-project/sql-jdbc.git"
+                    url = "git@github.com:opensearch-project/sql-jdbc.git"
                 }
                 licenses {
                     license {
@@ -183,7 +183,7 @@ publishing {
                 developers {
                     developer {
                         name = 'OpenSearch'
-                        url = 'https://github.com/opensearch-project/sql'
+                        url = 'https://github.com/opensearch-project/sql-jdbc'
                     }
                 }
             }
