@@ -66,7 +66,7 @@ public class TypeConverters {
 
         private static final Set<Class> supportedJavaClasses = Collections.unmodifiableSet(
                 new HashSet<>(Arrays.asList(
-                        String.class, Timestamp.class
+                        String.class, Timestamp.class, Time.class
                 )));
 
         private TimestampTypeConverter() {
