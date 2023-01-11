@@ -22,7 +22,7 @@ The driver is compatible with JDBC 4.2 specification and requires a minimum of J
 
 ## Download and Installation
 
-The driver is available for download from [Artifacts page](https://opensearch.org/artifacts) on OpenSearch.org at the very bottom and from [automated CI workflow](https://github.com/opensearch-project/sql-jdbc/actions/workflows/sql-jdbc-test-and-build-workflow.yml).
+The driver is available for download from [Maven](https://repo1.maven.org/maven2/org/opensearch/driver/opensearch-sql-jdbc/), from [Artifacts page](https://opensearch.org/artifacts) on OpenSearch.org at the very bottom and from [automated CI workflow](https://github.com/opensearch-project/sql-jdbc/actions/workflows/sql-jdbc-test-and-build-workflow.yml).
 
 ## Using the driver
 
