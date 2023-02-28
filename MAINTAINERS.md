@@ -4,10 +4,19 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 
 ## Current Maintainers
 
-| Maintainer            | GitHub ID                                     | Affiliation |
-| --------------------- | --------------------------------------------- | ----------- |
-| Anirudha (Ani) Jadhav | [anirudha](https://github.com/anirudha)       | Amazon      |
-| Peng Huo              | [penghuo](https://github.com/penghuo)         | Amazon      |
-| Chloe                 | [chloe-zh](https://github.com/chloe-zh)       | Amazon      |
-| Chen Dai              | [dai-chen](https://github.com/dai-chen)       | Amazon      |
-| Harold Wang           | [harold-wang](https://github.com/harold-wang) | Amazon      |
+| Maintainer            | GitHub ID                                           | Affiliation |
+| --------------------- | --------------------------------------------------- | ----------- |
+| Peng Huo              | [penghuo](https://github.com/penghuo)               | Amazon      |
+| Chen Dai              | [dai-chen](https://github.com/dai-chen)             | Amazon      |
+| Joshua Li             | [joshuali925](https://github.com/joshuali925        | Amazon      |
+| Vamsi Manohar         | [vamsi-amazon](https://github.com/vamsi-amazon      | Amazon      |
+| Max Ksyunz            | [MaxKsyunz](https://github.com/MaxKsyunz)           | BitQuill    |
+| Yury Fridlyand        | [Yury-Fridlyand](https://github.com/Yury-Fridlyand) | BitQuill    |
+
+## Emeritus Maintainers
+
+| Maintainer        | GitHub ID                                               | Affiliation |
+| ----------------- | ------------------------------------------------------- | ----------- |
+| Charlotte Henkle  | [CEHENKLE](https://github.com/CEHENKLE)                 | Amazon      |
+| Anirudha Jadhav   | [anirudha](https://github.com/anirudha)                 | Amazon      |
+| Nick Knize        | [nknize](https://github.com/nknize)                     | Amazon      |
