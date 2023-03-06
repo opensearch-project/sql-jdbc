@@ -236,6 +236,11 @@ jacocoTestCoverageVerification {
     }
 }
 
+configurations.all {
+    // fixes https://www.mend.io/vulnerability-database/CVE-2023-24998
+    resolutionStrategy.force 'commons-fileupload:commons-fileupload:1.5'
+}
+
 
 
 check.dependsOn jacocoTestCoverageVerification
