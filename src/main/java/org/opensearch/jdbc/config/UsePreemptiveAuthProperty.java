@@ -15,6 +15,6 @@ public class UsePreemptiveAuthProperty extends BoolConnectionProperty {
 
     @Override
     public Boolean getDefault() {
-        return true;
+        return false;
     }
 }
