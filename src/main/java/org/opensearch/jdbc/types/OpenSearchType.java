@@ -90,6 +90,9 @@ public enum OpenSearchType {
         jdbcTypeToOpenSearchTypeMap.put(JDBCType.TIME, TIME);
         jdbcTypeToOpenSearchTypeMap.put(JDBCType.DATE, DATE);
         jdbcTypeToOpenSearchTypeMap.put(JDBCType.VARBINARY, BINARY);
+
+        // Adding Struct Support
+        jdbcTypeToOpenSearchTypeMap.put(JDBCType.STRUCT, OBJECT);
     }
 
     /**

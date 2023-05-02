@@ -9,6 +9,7 @@ package org.opensearch.jdbc.types;
 import java.sql.Date;
 import java.sql.JDBCType;
 import java.sql.SQLException;
+import java.sql.Struct;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -56,10 +57,35 @@ public class TypeConverters {
         tcMap.put(JDBCType.BINARY, new BinaryTypeConverter());
 
         tcMap.put(JDBCType.NULL, new NullTypeConverter());
+
+        // Adding Struct Support
+        tcMap.put(JDBCType.STRUCT, new StructTypeConverter());
     }
 
     public static TypeConverter getInstance(JDBCType jdbcType) {
         return tcMap.get(jdbcType);
+    }
+
+    public static class StructTypeConverter extends BaseTypeConverter {
+
+        private static final Set<Class> supportedJavaClasses = Collections.unmodifiableSet(
+                new HashSet<>(Arrays.asList(
+                        Struct.class
+                )));
+
+        StructTypeConverter() {
+
+        }
+
+        @Override
+        public Class getDefaultJavaClass() {
+            return Struct.class;
+        }
+
+        @Override
+        public Set<Class> getSupportedJavaClasses() {
+            return supportedJavaClasses;
+        }
     }
 
     public static class TimestampTypeConverter extends BaseTypeConverter {

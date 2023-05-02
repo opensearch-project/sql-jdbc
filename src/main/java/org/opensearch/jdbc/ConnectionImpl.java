@@ -41,6 +41,7 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -436,7 +437,7 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
 
     @Override
     public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
-        throw new SQLFeatureNotSupportedException("Struct is not supported.");
+        return new StructImpl(typeName, attributes);
     }
 
     @Override
