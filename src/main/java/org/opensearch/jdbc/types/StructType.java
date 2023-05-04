@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.Collections;
 
 
 
@@ -30,13 +31,10 @@ public class StructType implements TypeHelper<Struct> {
 
     @Override
     public Struct fromValue(Object value, Map<String, Object> conversionParams) {
-        int i = 0;
-        Map<String, Object> structKeyValues = (Map<String, Object>) value;
-        Object[] attributes = new Map.Entry[structKeyValues.size()];
-
-        for(Map.Entry<String, Object> entry: structKeyValues.entrySet()) {
-            attributes[i++] = entry;
+        if (value == null) {
+          return null;
         }
-        return new StructImpl(getTypeName(), attributes);
+        Map<String, Object> structKeyValues = (Map<String, Object>) value;
+        return new StructImpl(getTypeName(), structKeyValues.entrySet().toArray());
     }
  }

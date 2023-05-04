@@ -68,10 +68,7 @@ public class TypeConverters {
 
     public static class StructTypeConverter extends BaseTypeConverter {
 
-        private static final Set<Class> supportedJavaClasses = Collections.unmodifiableSet(
-                new HashSet<>(Arrays.asList(
-                        Struct.class
-                )));
+        private static final Set<Class> supportedJavaClasses = Collections.singleton(Struct.class);
 
         StructTypeConverter() {
 
