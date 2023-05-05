@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.List;
 
-public class StructImpl implements Struct{
+public class StructImpl implements Struct {
     private final String typeName;
     private final Object[] attributes;
 
@@ -49,7 +49,7 @@ public class StructImpl implements Struct{
             List otherAttributes = Arrays.asList(other.getAttributes());
             return otherAttributes.containsAll(Arrays.asList(attributes));
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             return false;
         }
     }
