@@ -31,7 +31,7 @@ public class StructType implements TypeHelper<Struct> {
 
     @Override
     public Struct fromValue(Object value, Map<String, Object> conversionParams) {
-        if (value == null) {
+        if (value == null || !(value instanceof Map<?, ?>)) {
           return null;
         }
         Map<String, Object> structKeyValues = (Map<String, Object>) value;

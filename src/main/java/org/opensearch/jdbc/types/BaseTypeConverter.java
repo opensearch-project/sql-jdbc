@@ -36,7 +36,6 @@ public abstract class BaseTypeConverter implements TypeConverter {
         typeHandlerMap.put(Date.class, DateType.INSTANCE);
         typeHandlerMap.put(Time.class, TimeType.INSTANCE);
 
-        // Adding Struct Support
         typeHandlerMap.put(Struct.class, StructType.INSTANCE);
 
     }
