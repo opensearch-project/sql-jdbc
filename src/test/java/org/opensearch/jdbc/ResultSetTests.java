@@ -13,6 +13,7 @@ import org.opensearch.jdbc.protocol.http.JsonHttpProtocol;
 import org.opensearch.jdbc.test.TestResources;
 import org.opensearch.jdbc.test.mocks.MockOpenSearch;
 import org.opensearch.jdbc.types.OpenSearchType;
+import org.opensearch.jdbc.types.StructType;
 import org.opensearch.jdbc.test.PerTestWireMockServerExtension;
 import org.opensearch.jdbc.test.WireMockServerHelpers;
 import org.opensearch.jdbc.test.mocks.MockResultSet;
@@ -32,6 +33,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -176,6 +179,18 @@ public class ResultSetTests implements WireMockServerHelpers {
         Statement st = con.createStatement();
         ResultSet rs = assertDoesNotThrow(() -> st.executeQuery(queryMock.getSql()));
 
+        Map<String, Object> attributes = new HashMap<String, Object>() {{
+                put("attribute1", "value1");
+                put("attribute2", 2);
+                put("attribute3", 15.0);
+        }};
+
+        Map<String, Object> nestedAttributes = new HashMap<String, Object>() {{
+              put("struct", attributes);
+              put("string", "hello");
+              put("int", 1);
+          }};
+
         assertNotNull(rs);
 
         MockResultSetMetaData mockResultSetMetaData = MockResultSetMetaData.builder()
@@ -191,6 +206,7 @@ public class ResultSetTests implements WireMockServerHelpers {
                 .column("testKeyword", OpenSearchType.KEYWORD)
                 .column("testText", OpenSearchType.TEXT)
                 .column("testDouble", OpenSearchType.DOUBLE)
+                .column("testStruct", OpenSearchType.OBJECT)
                 .build();
 
         MockResultSetRows mockResultSetRows = MockResultSetRows.builder()
@@ -207,6 +223,7 @@ public class ResultSetTests implements WireMockServerHelpers {
                 .column("Test String", false)
                 .column("document3", false)
                 .column((double) 0, true)
+                .column(StructType.INSTANCE.fromValue(attributes, null), false)
                 .row()
                 .column(true, false)
                 .column("1", false)
@@ -220,6 +237,21 @@ public class ResultSetTests implements WireMockServerHelpers {
                 .column(null, true)
                 .column(null, true)
                 .column((double) 22.312423148903218, false)
+                .column(null, true)
+                .row()
+                .column(true, false)
+                .column("1", false)
+                .column((byte) 126, false)
+                .column((float) 0, true)
+                .column((long) 32000320003200030L, false)
+                .column((short) 29000, false)
+                .column((float) 0, true)
+                .column(null, true)
+                .column((double) 0, true)
+                .column(null, true)
+                .column(null, true)
+                .column((double) 22.312423148903218, false)
+                .column(StructType.INSTANCE.fromValue(nestedAttributes, null), false)
                 .build();
 
         MockResultSet mockResultSet = new MockResultSet(mockResultSetMetaData, mockResultSetRows);

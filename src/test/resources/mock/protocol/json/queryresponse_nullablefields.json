@@ -47,6 +47,10 @@
     {
       "name": "testDouble",
       "type": "double"
+    },
+    {
+      "name": "testStruct",
+      "type": "object"
     }
   ],
   "total": 2,
@@ -63,6 +67,26 @@
       24.324234543532153,
       "Test String",
       "document3",
+      null,
+      {
+        "attribute1": "value1",
+        "attribute2": 2,
+        "attribute3": 15.0
+      }
+    ],
+    [
+      true,
+      "1",
+      126,
+      null,
+      32000320003200030,
+      29000,
+      null,
+      null,
+      null,
+      null,
+      null,
+      22.312423148903218,
       null
     ],
     [
@@ -77,7 +101,12 @@
       null,
       null,
       null,
-      22.312423148903218
+      22.312423148903218,
+      {
+        "struct": {"attribute1": "value1", "attribute2": 2, "attribute3": 15.0},
+        "string": "hello",
+        "int": 1
+      }
     ]
   ],
   "size": 2,

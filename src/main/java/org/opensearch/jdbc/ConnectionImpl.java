@@ -436,7 +436,7 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
 
     @Override
     public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
-        throw new SQLFeatureNotSupportedException("Struct is not supported.");
+        return new StructImpl(typeName, attributes);
     }
 
     @Override
