@@ -8,6 +8,7 @@
 * Created untriaged issue workflow ([#58](https://github.com/opensearch-project/sql-jdbc/pull/58))
 * Update dependency `org.eclipse.jetty:jetty-server` to v11.0.14 ([#64](https://github.com/opensearch-project/sql-jdbc/pull/64))
 * Update dependency `net.minidev:json-smart` to v2.4.9 ([#70](https://github.com/opensearch-project/sql-jdbc/pull/70))
+* Update maintainers list ([#47](https://github.com/opensearch-project/sql-jdbc/pull/47))
 * Bump version and update release notes ([#75](https://github.com/opensearch-project/sql-jdbc/pull/75))
 
 ----
