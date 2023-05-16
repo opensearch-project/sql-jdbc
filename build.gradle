@@ -59,6 +59,7 @@ dependencies {
 
     // Enforce wiremock to use latest guava
     testImplementation('com.google.guava:guava:31.1-jre')
+    testImplementation('net.minidev:json-smart:2.4.9')
 
     testRuntimeOnly('org.slf4j:slf4j-simple:1.7.25') // capture WireMock logging
 }
@@ -199,6 +200,14 @@ jacocoTestCoverageVerification {
             }
         }
     }
+}
+
+configurations.all {
+    // fixes https://www.mend.io/vulnerability-database/CVE-2023-24998
+    resolutionStrategy.force 'commons-fileupload:commons-fileupload:1.5'
+    resolutionStrategy.force 'org.eclipse.jetty:jetty-client:11.0.14'
+    resolutionStrategy.force 'org.eclipse.jetty:jetty-servlets:11.0.14'
+    resolutionStrategy.force 'org.eclipse.jetty:jetty-webapp:11.0.14'
 }
 
 check.dependsOn jacocoTestCoverageVerification
