@@ -6,6 +6,7 @@
 
 package org.opensearch.jdbc.types;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Struct;
@@ -38,6 +39,7 @@ public abstract class BaseTypeConverter implements TypeConverter {
 
         typeHandlerMap.put(Struct.class, StructType.INSTANCE);
 
+        typeHandlerMap.put(Array.class, ArrayType.INSTANCE);
     }
 
     @Override
