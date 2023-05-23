@@ -51,6 +51,10 @@
     {
       "name": "testStruct",
       "type": "object"
+    },
+    {
+      "name": "testArray",
+      "type": "array"
     }
   ],
   "total": 2,
@@ -72,7 +76,8 @@
         "attribute1": "value1",
         "attribute2": 2,
         "attribute3": 15.0
-      }
+      },
+      ["item1", "item2", "item3"]
     ],
     [
       true,
@@ -87,6 +92,7 @@
       null,
       null,
       22.312423148903218,
+      null,
       null
     ],
     [
@@ -106,7 +112,19 @@
         "struct": {"attribute1": "value1", "attribute2": 2, "attribute3": 15.0},
         "string": "hello",
         "int": 1
-      }
+      },
+      [
+        {
+          "attribute1": "value1",
+          "attribute2": 2,
+          "attribute3": 15.0
+        },
+        {
+          "attribute1": "value2",
+          "attribute2": 100,
+          "attribute3": 75.5
+        }
+      ]
     ]
   ],
   "size": 2,

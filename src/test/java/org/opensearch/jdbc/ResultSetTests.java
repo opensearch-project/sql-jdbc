@@ -13,6 +13,7 @@ import org.opensearch.jdbc.protocol.http.JsonHttpProtocol;
 import org.opensearch.jdbc.test.TestResources;
 import org.opensearch.jdbc.test.mocks.MockOpenSearch;
 import org.opensearch.jdbc.types.OpenSearchType;
+import org.opensearch.jdbc.types.ArrayType;
 import org.opensearch.jdbc.types.StructType;
 import org.opensearch.jdbc.test.PerTestWireMockServerExtension;
 import org.opensearch.jdbc.test.WireMockServerHelpers;
@@ -33,6 +34,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -179,17 +182,27 @@ public class ResultSetTests implements WireMockServerHelpers {
         Statement st = con.createStatement();
         ResultSet rs = assertDoesNotThrow(() -> st.executeQuery(queryMock.getSql()));
 
-        Map<String, Object> attributes = new HashMap<String, Object>() {{
+        Map<String, Object> simpleAttributes = new HashMap<String, Object>() {{
                 put("attribute1", "value1");
                 put("attribute2", 2);
                 put("attribute3", 15.0);
         }};
 
+        Map<String, Object> simpleAttributes2 = new HashMap<String, Object>() {{
+                put("attribute1", "value2");
+                put("attribute2", 100);
+                put("attribute3", 75.5);
+        }};
+
         Map<String, Object> nestedAttributes = new HashMap<String, Object>() {{
-              put("struct", attributes);
+              put("struct", simpleAttributes);
               put("string", "hello");
               put("int", 1);
           }};
+
+        ArrayList<String> elements = new ArrayList<String>( Arrays.asList("item1", "item2", "item3") );
+        ArrayList<Object> elementsComplex = new ArrayList<Object>( Arrays.asList(simpleAttributes, simpleAttributes2));
+
 
         assertNotNull(rs);
 
@@ -207,6 +220,7 @@ public class ResultSetTests implements WireMockServerHelpers {
                 .column("testText", OpenSearchType.TEXT)
                 .column("testDouble", OpenSearchType.DOUBLE)
                 .column("testStruct", OpenSearchType.OBJECT)
+                .column("testArray", OpenSearchType.ARRAY)
                 .build();
 
         MockResultSetRows mockResultSetRows = MockResultSetRows.builder()
@@ -223,7 +237,8 @@ public class ResultSetTests implements WireMockServerHelpers {
                 .column("Test String", false)
                 .column("document3", false)
                 .column((double) 0, true)
-                .column(StructType.INSTANCE.fromValue(attributes, null), false)
+                .column(StructType.INSTANCE.fromValue(simpleAttributes, null), false)
+                .column(ArrayType.INSTANCE.fromValue(elements, null), false)
                 .row()
                 .column(true, false)
                 .column("1", false)
@@ -237,6 +252,7 @@ public class ResultSetTests implements WireMockServerHelpers {
                 .column(null, true)
                 .column(null, true)
                 .column((double) 22.312423148903218, false)
+                .column(null, true)
                 .column(null, true)
                 .row()
                 .column(true, false)
@@ -252,6 +268,7 @@ public class ResultSetTests implements WireMockServerHelpers {
                 .column(null, true)
                 .column((double) 22.312423148903218, false)
                 .column(StructType.INSTANCE.fromValue(nestedAttributes, null), false)
+                .column(ArrayType.INSTANCE.fromValue(elementsComplex, null), false)
                 .build();
 
         MockResultSet mockResultSet = new MockResultSet(mockResultSetMetaData, mockResultSetRows);

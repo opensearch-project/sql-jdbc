@@ -6,6 +6,7 @@
 
 package org.opensearch.jdbc.types;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.JDBCType;
 import java.sql.SQLException;
@@ -58,8 +59,10 @@ public class TypeConverters {
 
         tcMap.put(JDBCType.NULL, new NullTypeConverter());
 
-        // Adding Struct Support
         tcMap.put(JDBCType.STRUCT, new StructTypeConverter());
+
+        // Adding Array Support
+        tcMap.put(JDBCType.ARRAY, new ArrayTypeConverter());
     }
 
     public static TypeConverter getInstance(JDBCType jdbcType) {
@@ -77,6 +80,25 @@ public class TypeConverters {
         @Override
         public Class getDefaultJavaClass() {
             return Struct.class;
+        }
+
+        @Override
+        public Set<Class> getSupportedJavaClasses() {
+            return supportedJavaClasses;
+        }
+    }
+
+    public static class ArrayTypeConverter extends BaseTypeConverter {
+
+        private static final Set<Class> supportedJavaClasses = Collections.singleton(Array.class);
+
+        ArrayTypeConverter() {
+
+        }
+
+        @Override
+        public Class getDefaultJavaClass() {
+            return Array.class;
         }
 
         @Override
