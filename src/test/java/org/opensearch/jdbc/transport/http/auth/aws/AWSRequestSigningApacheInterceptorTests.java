@@ -97,7 +97,7 @@ public class AWSRequestSigningApacheInterceptorTests {
                 new AWSStaticCredentialsProvider(new AnonymousAWSCredentials());
         return new AWSRequestSigningApacheInterceptor("servicename",
                 new AddHeaderSigner("Signature", "wuzzle"),
-                anonymousCredentialsProvider);
+                anonymousCredentialsProvider, null);
 
     }
 }

@@ -7,6 +7,7 @@
 package org.opensearch.jdbc.transport.http.auth.aws;
 
 import com.amazonaws.DefaultRequest;
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.Signer;
 import com.amazonaws.http.HttpMethodName;
@@ -54,6 +55,12 @@ public class AWSRequestSigningApacheInterceptor implements HttpRequestIntercepto
     private final AWSCredentialsProvider awsCredentialsProvider;
 
     /**
+     * Hostname of the OpenSearch cluster, required to make a valid AWS signature in case if
+     * proxy/tunnel/gateway used.
+     */
+    private final String host;
+
+    /**
      *
      * @param service service that we're connecting to
      * @param signer particular signer implementation
@@ -61,10 +68,12 @@ public class AWSRequestSigningApacheInterceptor implements HttpRequestIntercepto
      */
     public AWSRequestSigningApacheInterceptor(final String service,
                                               final Signer signer,
-                                              final AWSCredentialsProvider awsCredentialsProvider) {
+                                              final AWSCredentialsProvider awsCredentialsProvider,
+                                              final String host) {
         this.service = service;
         this.signer = signer;
         this.awsCredentialsProvider = awsCredentialsProvider;
+        this.host = host;
     }
 
     /**
@@ -83,9 +92,14 @@ public class AWSRequestSigningApacheInterceptor implements HttpRequestIntercepto
         // Copy Apache HttpRequest to AWS DefaultRequest
         DefaultRequest<?> signableRequest = new DefaultRequest<>(service);
 
-        HttpHost host = (HttpHost) context.getAttribute(HTTP_TARGET_HOST);
-        if (host != null) {
-            signableRequest.setEndpoint(URI.create(host.toURI()));
+        if (host != null && !host.equals("")) {
+            // override host if given by user (`tunnelHost` connection parameter)
+            signableRequest.setEndpoint(URI.create("https://" + host));
+        } else {
+            HttpHost host = (HttpHost) context.getAttribute(HTTP_TARGET_HOST);
+            if (host != null) {
+                signableRequest.setEndpoint(URI.create(host.toURI()));
+            }
         }
         final HttpMethodName httpMethod =
                 HttpMethodName.fromValue(request.getRequestLine().getMethod());
@@ -120,6 +134,7 @@ public class AWSRequestSigningApacheInterceptor implements HttpRequestIntercepto
                 httpEntityEnclosingRequest.setEntity(basicHttpEntity);
             }
         }
+
     }
 
     /**
