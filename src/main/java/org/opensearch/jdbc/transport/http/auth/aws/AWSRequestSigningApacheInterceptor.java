@@ -94,7 +94,7 @@ public class AWSRequestSigningApacheInterceptor implements HttpRequestIntercepto
 
         if (host != null && !host.equals("")) {
             // override host if given by user (`tunnelHost` connection parameter)
-            signableRequest.setEndpoint(URI.create("https://" + host));
+            signableRequest.setEndpoint(URI.create(host.startsWith("http") ? host : "https://" + host));
         } else {
             HttpHost host = (HttpHost) context.getAttribute(HTTP_TARGET_HOST);
             if (host != null) {

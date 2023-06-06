@@ -450,7 +450,7 @@ public class ConnectionConfig {
 
                 while (enumeration.hasMoreElements()) {
                     String key = (String) enumeration.nextElement();
-                    this.properties.setProperty(key, properties.getProperty(key));
+                    this.properties.setProperty(key.toLowerCase(), properties.getProperty(key));
                 }
             }
             return this;
@@ -559,6 +559,7 @@ public class ConnectionConfig {
          * @return effective value
          */
         private Object getPropertyValueToSet(String key) {
+            key = key.toLowerCase();
             if (overrideMap != null && overrideMap.containsKey(key)) {
                 return overrideMap.get(key);
             }

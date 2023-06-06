@@ -13,7 +13,7 @@ public class TunnelHostConnectionProperty extends StringConnectionProperty {
     }
 
     public String getDefault() {
-        return "localhost";
+        return null;
     }
 
 }
