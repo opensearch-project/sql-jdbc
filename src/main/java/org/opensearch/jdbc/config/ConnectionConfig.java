@@ -416,8 +416,12 @@ public class ConnectionConfig {
 
         public Builder setPropertyMap(Map<String, Object> map) {
             if (map != null) {
-                propertyMap = new HashMap<>();
-                propertyMap.putAll(map);
+                if (propertyMap == null) {
+                    propertyMap = new HashMap<>();
+                }
+                for (Map.Entry<String, Object> pair : map.entrySet()) {
+                    propertyMap.put(pair.getKey().toLowerCase(), pair.getValue());
+                }
             }
             return this;
         }
@@ -437,7 +441,9 @@ public class ConnectionConfig {
                 if (overrideMap == null) {
                     overrideMap = new HashMap<>();
                 }
-                this.overrideMap.putAll(map);
+                for (Map.Entry<String, Object> pair : map.entrySet()) {
+                    overrideMap.put(pair.getKey().toLowerCase(), pair.getValue());
+                }
             }
             return this;
         }

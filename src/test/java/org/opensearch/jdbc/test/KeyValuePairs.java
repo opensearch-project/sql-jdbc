@@ -36,7 +36,7 @@ public class KeyValuePairs {
 
     public static Properties toProperties(final StringKvp... kvps) {
         Properties props = new Properties();
-        Arrays.stream(kvps).forEach(kvp -> props.setProperty(kvp.getKey(), kvp.getValue()));
+        Arrays.stream(kvps).forEach(kvp -> props.setProperty(kvp.getKey().toLowerCase(), kvp.getValue()));
         return props;
     }
 

@@ -17,9 +17,9 @@ public class HostConnectionProperty extends StringConnectionProperty {
 
     @Override
     protected String parseValue(Object value) throws ConnectionPropertyException {
-        String host = value.toString();
+        String host = super.parseValue(value);
         // URI class extracts host from the string. It requires a prefix to be set to parse it properly.
-        return URI.create(host.startsWith("http") ? host : "https://" + host).getHost();
+        return URI.create(host.startsWith("http") ? host : "https://" + host).getAuthority();
     }
 
     public String getDefault() {
