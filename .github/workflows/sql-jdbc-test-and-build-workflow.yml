@@ -5,18 +5,11 @@ on:
   push:
     branches-ignore:
       - 'dependabot/**'
-    paths:
-      - '.'
-      - '.github/workflows/sql-jdbc-test-and-build-workflow.yml'
 
 jobs:
   build:
     strategy:
       matrix:
-        entry:
-          - { os: ubuntu-latest }
-          - { os: windows-latest, os_build_args:  -x compileJdbc -x jacocoTestReport}
-          - { os: macos-latest, os_build_args:  -x compileJdbc -x jacocoTestReport }
         java:
           - 11
           - 17
@@ -39,7 +32,7 @@ jobs:
         cp ./build/libs/*.jar sql-jdbc-builds
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
-        name: sql-jdbc
+        name: sql-jdbc-java-${{ matrix.java }}
         path: sql-jdbc-builds
