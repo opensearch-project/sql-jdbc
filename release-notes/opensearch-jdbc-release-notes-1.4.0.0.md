@@ -1,5 +1,8 @@
 ## Version 1.4.0.0
 
+Tableau connector (TACO) isn't released with JDBC, see related changes in [TACO release notes](opensearch-jdbc-tableau-
+connector-release-notes-1.0.0.0.md).
+
 ### Features
 * Add new connection parameter tunnelHost to use with tunnel cunnection. ([#83](https://github.com/opensearch-project/sql-jdbc/pull/83))
 * Update SHOW and DESCRIBE queries. ([#85](https://github.com/opensearch-project/sql-jdbc/pull/85))
