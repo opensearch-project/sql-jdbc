@@ -1,7 +1,6 @@
 ## Version 1.4.0.0
 
 ### Features
-* Adding Array Support including Unit Tests ([#81](https://github.com/opensearch-project/sql-jdbc/pull/81))
 * Add new connection parameter tunnelHost to use with tunnel cunnection. ([#83](https://github.com/opensearch-project/sql-jdbc/pull/83))
 * Update SHOW and DESCRIBE queries. ([#85](https://github.com/opensearch-project/sql-jdbc/pull/85))
 
