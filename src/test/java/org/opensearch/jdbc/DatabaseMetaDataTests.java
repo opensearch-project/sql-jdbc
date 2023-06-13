@@ -364,7 +364,7 @@ public class DatabaseMetaDataTests {
         Connection con = getMockConnection();
         
         ColumnMetadataStatement stmt = new ColumnMetadataStatement((ConnectionImpl)con, "TABLE_%", null, NoOpLogger.INSTANCE);
-        assertEquals("DESCRIBE TABLES LIKE TABLE_%", stmt.sql);
+        assertEquals("DESCRIBE TABLES LIKE 'TABLE_%'", stmt.sql);
         assertDoesNotThrow(stmt::close);
     }
     
@@ -373,7 +373,7 @@ public class DatabaseMetaDataTests {
         Connection con = getMockConnection();
         
         ColumnMetadataStatement stmt = new ColumnMetadataStatement((ConnectionImpl)con, "TABLE_%", "COLUMN_%", NoOpLogger.INSTANCE);
-        assertEquals("DESCRIBE TABLES LIKE TABLE_% COLUMNS LIKE COLUMN_%", stmt.sql);
+        assertEquals("DESCRIBE TABLES LIKE 'TABLE_%' COLUMNS LIKE 'COLUMN_%'", stmt.sql);
         assertDoesNotThrow(stmt::close);
     }
 
