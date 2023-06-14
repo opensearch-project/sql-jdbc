@@ -671,12 +671,12 @@ public class DatabaseMetaDataImpl implements DatabaseMetaData, JdbcWrapper, Logg
 
     @Override
     public ResultSet getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) throws SQLException {
-        // TODO - when server plugin supports PreparedStatement fully, implement this as a preparedStatment with params
+        // TODO - when server plugin supports PreparedStatement fully, implement this as a preparedStatement with params
         log.debug(() -> logMessage("getTables(%s, %s, %s, %s)",
                 catalog, schemaPattern, tableNamePattern, Arrays.toString(types)));
 
-        PreparedStatement pst = connection.prepareStatement("SHOW TABLES LIKE " +
-                (tableNamePattern == null ? "%" : tableNamePattern));
+        PreparedStatement pst = connection.prepareStatement("SHOW TABLES LIKE '" +
+                (tableNamePattern == null ? "%" : tableNamePattern) + "'");
 
         ResultSet resultSet = pst.executeQuery();
 
@@ -1207,8 +1207,8 @@ public class DatabaseMetaDataImpl implements DatabaseMetaData, JdbcWrapper, Logg
         ColumnMetadataStatement(ConnectionImpl connection, String tableNamePattern, String columnNamePattern, Logger log)
                 throws SQLException {
             // TODO - once sql plugin supports PreparedStatement fully, do this through a preparedStatement with params
-            super(connection, "DESCRIBE TABLES LIKE " + tableNamePattern +
-                (columnNamePattern != null ? (" COLUMNS LIKE " + columnNamePattern) : ""),
+            super(connection, "DESCRIBE TABLES LIKE '" + tableNamePattern +
+                (columnNamePattern != null ? ("' COLUMNS LIKE '" + columnNamePattern + "'") : "'"),
                 log);
         }
 
