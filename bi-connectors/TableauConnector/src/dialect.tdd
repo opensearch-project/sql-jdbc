@@ -87,6 +87,11 @@
             <argument type='date' />
             <argument type='datetime' />
         </function>
+        <function group='operator' name='==' return-type='bool'>
+            <formula>(%1 = %2)</formula>
+            <argument type='date' />
+            <argument type='date' />
+        </function>
         <function group='operator' name='!=' return-type='bool'>
             <formula>(%1 AND NOT %2 OR NOT %1 AND %2)</formula>
             <argument type='bool' />
@@ -127,6 +132,11 @@
             <argument type='datetime' />
             <argument type='date' />
         </function>
+        <function group='operator' name='!=' return-type='bool'>
+            <formula>(%1 &lt;&gt; %2)</formula>
+            <argument type='date' />
+            <argument type='date' />
+        </function>
         <function group='operator' name='&gt;' return-type='bool'>
             <formula>(%1 &gt; CAST(DATE_FORMAT(%2, '%Y-%m-%d 00:00:00') AS TIMESTAMP))</formula>
             <argument type='datetime' />
@@ -136,6 +146,11 @@
             <formula>(CAST(DATE_FORMAT(%1, '%Y-%m-%d 00:00:00') AS TIMESTAMP)  &gt; %2)</formula>
             <argument type='date' />
             <argument type='datetime' />
+        </function>
+        <function group='operator' name='&gt;' return-type='bool'>
+            <formula>(%1 &gt; %2)</formula>
+            <argument type='date' />
+            <argument type='date' />
         </function>
         <function group='operator' name='&gt;=' return-type='bool'>
             <formula>(%1 &gt;= CAST(DATE_FORMAT(%2, '%Y-%m-%d 00:00:00') AS TIMESTAMP))</formula>
@@ -147,6 +162,11 @@
             <argument type='date' />
             <argument type='datetime' />
         </function>
+        <function group='operator' name='&gt;=' return-type='bool'>
+            <formula>(%1 &gt;= %2)</formula>
+            <argument type='date' />
+            <argument type='date' />
+        </function>
         <function group='operator' name='&lt;' return-type='bool'>
             <formula>(%1 &lt; CAST(DATE_FORMAT(%2, '%Y-%m-%d 00:00:00') AS TIMESTAMP))</formula>
             <argument type='datetime' />
@@ -156,6 +176,11 @@
             <formula>(CAST(DATE_FORMAT(%1, '%Y-%m-%d 00:00:00') AS TIMESTAMP)  &lt; %2)</formula>
             <argument type='date' />
             <argument type='datetime' />
+        </function>
+        <function group='operator' name='&lt;' return-type='bool'>
+            <formula>(%1 &lt; %2)</formula>
+            <argument type='date' />
+            <argument type='date' />
         </function>
         <function group='operator' name='&lt;=' return-type='bool'>
             <formula>(%1 &lt;= CAST(DATE_FORMAT(%2, '%Y-%m-%d 00:00:00') AS TIMESTAMP))</formula>
@@ -167,10 +192,26 @@
             <argument type='date' />
             <argument type='datetime' />
         </function>
+        <function group='operator' name='&lt;=' return-type='bool'>
+            <formula>(%1 &lt;= %2)</formula>
+            <argument type='date' />
+            <argument type='date' />
+        </function>
         <function group='operator' name='+' return-type='datetime'>
             <!-- 86400 as it represents seconds in a day -->
             <formula>DATE_ADD(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
             <argument type='datetime' />
+            <argument type='real' />
+        </function>
+        <function group='operator' name='+' return-type='datetime'>
+            <formula>DATE_ADD(%1, INTERVAL %2 DAY)</formula>
+            <argument type='date' />
+            <argument type='int' />
+        </function>
+        <function group='operator' name='+' return-type='datetime'>
+            <!-- 86400 as it represents seconds in a day -->
+            <formula>DATE_ADD(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
+            <argument type='date' />
             <argument type='real' />
         </function>
         <function group='operator' name='-' return-type='int'>
@@ -189,13 +230,13 @@
         </function>
         <function group='operator' name='-' return-type='real'>
             <!-- 86400 as it represents seconds in a day -->
-            <formula>((TO_DAYS(%1) - TO_DAYS(CAST(DATE_FORMAT(%2, '%Y-%m-%d 00:00:00') AS TIMESTAMP))) + ((TIME_TO_SEC(%1) - TIME_TO_SEC(CAST(DATE_FORMAT(%2, '%Y-%m-%d 00:00:00') AS TIMESTAMP))) / 86400.0))</formula>
+            <formula>(unix_timestamp(%1) - unix_timestamp(%2)) / 86400</formula>
             <argument type='datetime' />
             <argument type='date' />
         </function>
         <function group='operator' name='-' return-type='real'>
             <!-- 86400 as it represents seconds in a day -->
-            <formula>((TO_DAYS(CAST(DATE_FORMAT(%1, '%Y-%m-%d 00:00:00') AS TIMESTAMP))) - TO_DAYS(%1) + ((TIME_TO_SEC(CAST(DATE_FORMAT(%1, '%Y-%m-%d 00:00:00') AS TIMESTAMP)) - TIME_TO_SEC(%2)) / 86400.0))</formula>
+            <formula>(unix_timestamp(%1) - unix_timestamp(%2)) / 86400</formula>
             <argument type='date' />
             <argument type='datetime' />
         </function>
@@ -204,6 +245,22 @@
             <formula>DATE_SUB(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
             <argument type='datetime' />
             <argument type='real' />
+        </function>
+        <function group='operator' name='-' return-type='datetime'>
+            <formula>DATE_SUB(%1, INTERVAL %2 DAY)</formula>
+            <argument type='date' />
+            <argument type='int' />
+        </function>
+        <function group='operator' name='-' return-type='datetime'>
+            <!-- 86400 as it represents seconds in a day -->
+            <formula>DATE_SUB(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
+            <argument type='date' />
+            <argument type='real' />
+        </function>
+        <function group='operator' name='-' return-type='real'>
+            <formula>TO_DAYS(%1) - TO_DAYS(%2)</formula>
+            <argument type='date' />
+            <argument type='date' />
         </function>
         <function group='operator' name='/' return-type='real'>
             <formula>CAST(%1 AS DOUBLE) / %2</formula>
@@ -262,6 +319,14 @@
             <argument type='datetime' />
             <argument type='datetime' />
         </function>
+        <function group='numeric' name='MAX' return-type='date'>
+            <formula>CASE WHEN ISNULL(%1) THEN NULL
+                WHEN ISNULL(%2) THEN NULL
+                WHEN %1 &gt; %2 THEN %1
+                ELSE %2 END</formula>
+            <argument type='date' />
+            <argument type='date' />
+        </function>
         <function group='numeric' name='MAX' return-type='str'>
             <formula>CASE WHEN ISNULL(%1) THEN NULL
                 WHEN ISNULL(%2) THEN NULL
@@ -293,6 +358,14 @@
                 ELSE %2 END</formula>
             <argument type='datetime' />
             <argument type='datetime' />
+        </function>
+        <function group='numeric' name='MIN' return-type='date'>
+            <formula>CASE WHEN ISNULL(%1) THEN NULL
+                WHEN ISNULL(%2) THEN NULL
+                WHEN %1 &lt; %2 THEN %1
+                ELSE %2 END</formula>
+            <argument type='date' />
+            <argument type='date' />
         </function>
         <function group='numeric' name='MIN' return-type='str'>
             <formula>CASE WHEN ISNULL(%1) THEN NULL
