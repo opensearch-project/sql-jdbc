@@ -199,7 +199,7 @@
         </function>
         <function group='operator' name='+' return-type='datetime'>
             <!-- 86400 as it represents seconds in a day -->
-            <formula>DATE_ADD(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
+            <formula>DATE_ADD(%1, INTERVAL CAST((86400 * (%2)) AS INT) SECOND)</formula>
             <argument type='datetime' />
             <argument type='real' />
         </function>
@@ -210,16 +210,16 @@
         </function>
         <function group='operator' name='+' return-type='datetime'>
             <!-- 86400 as it represents seconds in a day -->
-            <formula>DATE_ADD(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
+            <formula>DATE_ADD(%1, INTERVAL CAST((86400 * (%2)) AS INT) SECOND)</formula>
             <argument type='date' />
             <argument type='real' />
         </function>
         <function group='operator' name='-' return-type='int'>
-            <formula>(%1 * -1)</formula>
+            <formula>((%1) * -1)</formula>
             <argument type='int' />
         </function>
         <function group='operator' name='-' return-type='real'>
-            <formula>(%1 * -1)</formula>
+            <formula>((%1) * -1)</formula>
             <argument type='real' />
         </function>
         <function group='operator' name='-' return-type='real'>
@@ -242,7 +242,7 @@
         </function>
         <function group='operator' name='-' return-type='datetime'>
             <!-- 86400 as it represents seconds in a day -->
-            <formula>DATE_SUB(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
+            <formula>DATE_SUB(%1, INTERVAL CAST((86400 * (%2)) AS INT) SECOND)</formula>
             <argument type='datetime' />
             <argument type='real' />
         </function>
@@ -253,7 +253,7 @@
         </function>
         <function group='operator' name='-' return-type='datetime'>
             <!-- 86400 as it represents seconds in a day -->
-            <formula>DATE_SUB(%1, INTERVAL CAST((86400 * %2) AS INT) SECOND)</formula>
+            <formula>DATE_SUB(%1, INTERVAL CAST((86400 * (%2)) AS INT) SECOND)</formula>
             <argument type='date' />
             <argument type='real' />
         </function>
@@ -263,7 +263,7 @@
             <argument type='date' />
         </function>
         <function group='operator' name='/' return-type='real'>
-            <formula>CAST(%1 AS DOUBLE) / %2</formula>
+            <formula>CAST(%1 AS DOUBLE) / (%2)</formula>
             <argument type='int' />
             <argument type='int' />
         </function>
@@ -273,12 +273,12 @@
             <argument type="real" />
         </function>
         <function group='numeric' name='DIV' return-type='int'>
-            <formula>CASE WHEN %2 = 0 THEN NULL ELSE ( %1 / %2 ) END</formula>
+            <formula>CASE WHEN %2 = 0 THEN NULL ELSE ( (%1) / (%2) ) END</formula>
             <argument type='int' />
             <argument type='int' />
         </function>
         <function group='numeric' name='DIV' return-type='real'>
-            <formula>CASE WHEN %2 = 0 THEN NULL ELSE ( %1 / %2 ) END</formula>
+            <formula>CASE WHEN %2 = 0 THEN NULL ELSE ( (%1) / (%2) ) END</formula>
             <argument type='real' />
             <argument type='real' />
         </function>
