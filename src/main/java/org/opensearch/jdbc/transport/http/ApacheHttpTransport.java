@@ -119,7 +119,8 @@ public class ApacheHttpTransport implements HttpTransport, LoggingSource {
                     new AWSRequestSigningApacheInterceptor(
                             "es",
                             signer,
-                            provider));
+                            provider,
+                            connectionConfig.tunnelHost()));
         }
 
         // TODO - can apply settings retry & backoff

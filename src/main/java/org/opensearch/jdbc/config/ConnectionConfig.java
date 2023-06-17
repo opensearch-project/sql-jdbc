@@ -46,6 +46,7 @@ public class ConnectionConfig {
     private String trustStoreType;
     private boolean trustSelfSigned;
     private boolean hostnameVerification;
+    private String tunnelHost;
 
     private ConnectionConfig(Builder builder) {
         this.url = builder.getUrl();
@@ -80,6 +81,7 @@ public class ConnectionConfig {
         this.trustSelfSigned = builder.getTrustSelfSignedConnectionProperty().getValue();
 
         this.hostnameVerification = builder.getHostnameVerificationConnectionProperty().getValue();
+        this.tunnelHost = builder.getTunnelHostConnectionProperty().getValue();
     }
 
     public static Builder builder() {
@@ -182,6 +184,10 @@ public class ConnectionConfig {
         return hostnameVerification;
     }
 
+    public String tunnelHost() {
+        return tunnelHost;
+    }
+
     @Override
     public String toString() {
         return "ConnectionConfig{" +
@@ -209,6 +215,7 @@ public class ConnectionConfig {
                 ", trustStoreType='" + trustStoreType + '\'' +
                 ", trustSelfSigned='" + trustSelfSigned + '\'' +
                 ", hostnameVerification='" + hostnameVerification + '\'' +
+                ", tunnelHost='" + tunnelHost + '\'' +
                 '}';
     }
 
@@ -256,6 +263,9 @@ public class ConnectionConfig {
         private HostnameVerificationConnectionProperty hostnameVerificationConnectionProperty
                 = new HostnameVerificationConnectionProperty();
 
+        private TunnelHostConnectionProperty tunnelHostConnectionProperty
+                = new TunnelHostConnectionProperty();
+
         ConnectionProperty[] connectionProperties = new ConnectionProperty[]{
                 hostProperty,
                 portProperty,
@@ -278,7 +288,8 @@ public class ConnectionConfig {
                 trustStorePasswordConnectionProperty,
                 trustStoreTypeConnectionProperty,
                 trustSelfSignedConnectionProperty,
-                hostnameVerificationConnectionProperty
+                hostnameVerificationConnectionProperty,
+                tunnelHostConnectionProperty
         };
 
         private String url = null;
@@ -385,6 +396,10 @@ public class ConnectionConfig {
             return hostnameVerificationConnectionProperty;
         }
 
+        public TunnelHostConnectionProperty getTunnelHostConnectionProperty() {
+            return tunnelHostConnectionProperty;
+        }
+
         public Builder setLogWriter(PrintWriter printWriter) {
             this.logWriter = printWriter;
             return this;
@@ -401,8 +416,12 @@ public class ConnectionConfig {
 
         public Builder setPropertyMap(Map<String, Object> map) {
             if (map != null) {
-                propertyMap = new HashMap<>();
-                propertyMap.putAll(map);
+                if (propertyMap == null) {
+                    propertyMap = new HashMap<>();
+                }
+                for (Map.Entry<String, Object> pair : map.entrySet()) {
+                    propertyMap.put(pair.getKey().toLowerCase(), pair.getValue());
+                }
             }
             return this;
         }
@@ -422,7 +441,9 @@ public class ConnectionConfig {
                 if (overrideMap == null) {
                     overrideMap = new HashMap<>();
                 }
-                this.overrideMap.putAll(map);
+                for (Map.Entry<String, Object> pair : map.entrySet()) {
+                    overrideMap.put(pair.getKey().toLowerCase(), pair.getValue());
+                }
             }
             return this;
         }
@@ -435,7 +456,7 @@ public class ConnectionConfig {
 
                 while (enumeration.hasMoreElements()) {
                     String key = (String) enumeration.nextElement();
-                    this.properties.setProperty(key, properties.getProperty(key));
+                    this.properties.setProperty(key.toLowerCase(), properties.getProperty(key));
                 }
             }
             return this;
@@ -544,6 +565,7 @@ public class ConnectionConfig {
          * @return effective value
          */
         private Object getPropertyValueToSet(String key) {
+            key = key.toLowerCase();
             if (overrideMap != null && overrideMap.containsKey(key)) {
                 return overrideMap.get(key);
             }

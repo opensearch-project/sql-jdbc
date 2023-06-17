@@ -84,18 +84,18 @@ public class UrlParser {
             String path = uri.getPath();
 
             if (host != null)
-                props.setProperty(HostConnectionProperty.KEY, host);
+                props.setProperty(HostConnectionProperty.KEY.toLowerCase(), host);
 
             if (port != -1)
-                props.setProperty(PortConnectionProperty.KEY, Integer.toString(port));
+                props.setProperty(PortConnectionProperty.KEY.toLowerCase(), Integer.toString(port));
 
             if (path != null && path.length() > 0)
-                props.setProperty(PathConnectionProperty.KEY, path);
+                props.setProperty(PathConnectionProperty.KEY.toLowerCase(), path);
 
             if ("https".equalsIgnoreCase(scheme)) {
-                props.setProperty(UseSSLConnectionProperty.KEY, "true");
+                props.setProperty(UseSSLConnectionProperty.KEY.toLowerCase(), "true");
             } else if ("http".equalsIgnoreCase(scheme)) {
-                props.setProperty(UseSSLConnectionProperty.KEY, "false");
+                props.setProperty(UseSSLConnectionProperty.KEY.toLowerCase(), "false");
             } else {
                 throw new URISyntaxException(inputUrl, "Invalid scheme:"+scheme+". Only http and https are supported.");
             }
@@ -114,7 +114,7 @@ public class UrlParser {
                                         + kv[0]
                                         + ". Expected key=value pairs");
                     } else {
-                        props.setProperty(kv[0], kv[1]);
+                        props.setProperty(kv[0].toLowerCase(), kv[1]);
                     }
                 }
             }
