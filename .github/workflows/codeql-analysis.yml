@@ -32,6 +32,9 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
+        # using v2.13.3 due to a breaking change in codeql https://github.com/github/codeql/issues/13541
+        tools: 'https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.13.3/codeql-bundle-linux64.tar.gz'
+
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
     - name: Perform CodeQL Analysis
