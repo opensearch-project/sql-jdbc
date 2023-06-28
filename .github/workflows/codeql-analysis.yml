@@ -32,10 +32,12 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
-        # using v2.13.3 due to a breaking change in codeql https://github.com/github/codeql/issues/13541
-        tools: 'https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.13.3/codeql-bundle-linux64.tar.gz'
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    # allows for java 8 and java 11 to be used.
+    # https://github.com/opensearch-project/sql-jdbc/pull/96#issuecomment-1611181743
+    - name: Build
+      run: |
+        ./gradlew --no-daemon -S -Dorg.gradle.dependency.verification=off clean
+        ./gradlew --no-daemon -S -Dorg.gradle.dependency.verification=off testClasses
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
