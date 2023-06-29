@@ -22,3 +22,4 @@ connector-release-notes-1.0.0.0.md).
 * Update CI workflows. ([#87](https://github.com/opensearch-project/sql-jdbc/pull/87))
 * Update release notes. ([#88](https://github.com/opensearch-project/sql-jdbc/pull/88))
 * Fix H2 and guava CVEs. ([#96](https://github.com/opensearch-project/sql-jdbc/pull/96))
+* Replaced autobuild workflow to fix CI. ([#100](https://github.com/opensearch-project/sql-jdbc/pull/100))
