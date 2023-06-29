@@ -17,6 +17,7 @@ import org.opensearch.jdbc.protocol.ConnectionResponse;
 import org.opensearch.jdbc.protocol.Protocol;
 import org.opensearch.jdbc.protocol.ProtocolFactory;
 import org.opensearch.jdbc.protocol.exceptions.ResponseException;
+import org.opensearch.jdbc.protocol.http.HttpException;
 import org.opensearch.jdbc.protocol.http.JsonHttpProtocolFactory;
 import org.opensearch.jdbc.transport.Transport;
 import org.opensearch.jdbc.transport.TransportException;
@@ -55,6 +56,9 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
     private Transport transport;
     private Protocol protocol;
     private ClusterMetadata clusterMetadata;
+    // https://docs.oracle.com/cd/E15817_01/appdev.111/b31228/appd.htm
+    // 28000 is the SQLSTATE for invalid authorization specification
+    private final String INCORRECT_CREDENTIALS_SQLSTATE = "28000";
 
     public ConnectionImpl(ConnectionConfig connectionConfig, Logger log) throws SQLException {
         this(connectionConfig, ApacheHttpTransportFactory.INSTANCE, JsonHttpProtocolFactory.INSTANCE, log);
@@ -83,8 +87,15 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
             ConnectionResponse connectionResponse = this.protocol.connect(connectionConfig.getLoginTimeout() * 1000);
             this.clusterMetadata = connectionResponse.getClusterMetadata();
             this.open = true;
+        } catch (HttpException ex) {
+            if (ex.getStatusCode() == 401) {
+                logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(),
+                    INCORRECT_CREDENTIALS_SQLSTATE, ex));
+            } else {
+                logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
+            }
         } catch (ResponseException | IOException ex) {
-            logAndThrowSQLException(log, new SQLException("Connection error "+ex.getMessage(), ex));
+            logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
         }
 
     }
