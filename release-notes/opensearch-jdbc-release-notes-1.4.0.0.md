@@ -23,3 +23,4 @@ connector-release-notes-1.0.0.0.md).
 * Update release notes. ([#88](https://github.com/opensearch-project/sql-jdbc/pull/88))
 * Fix H2 and guava CVEs. ([#96](https://github.com/opensearch-project/sql-jdbc/pull/96))
 * Replaced autobuild workflow to fix CI. ([#100](https://github.com/opensearch-project/sql-jdbc/pull/100))
+* Make driver throw SQLSTATE 28000 for invalid username or password. ([#102](https://github.com/opensearch-project/sql-jdbc/pull/102))

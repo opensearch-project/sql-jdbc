@@ -7,11 +7,17 @@
 package org.opensearch.jdbc;
 
 import org.opensearch.jdbc.config.AuthConnectionProperty;
+import org.opensearch.jdbc.config.ConnectionConfig;
 import org.opensearch.jdbc.config.ConnectionPropertyException;
 import org.opensearch.jdbc.config.PasswordConnectionProperty;
 import org.opensearch.jdbc.config.RegionConnectionProperty;
 import org.opensearch.jdbc.config.RequestCompressionConnectionProperty;
 import org.opensearch.jdbc.config.UserConnectionProperty;
+import org.opensearch.jdbc.logging.NoOpLogger;
+import org.opensearch.jdbc.protocol.Protocol;
+import org.opensearch.jdbc.protocol.ProtocolFactory;
+import org.opensearch.jdbc.protocol.exceptions.ResponseException;
+import org.opensearch.jdbc.protocol.http.HttpException;
 import org.opensearch.jdbc.protocol.http.JsonHttpProtocol;
 import org.opensearch.jdbc.test.PerTestWireMockServerExtension;
 import org.opensearch.jdbc.test.WireMockServerHelpers;
@@ -25,6 +31,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.opensearch.jdbc.transport.Transport;
+import org.opensearch.jdbc.transport.TransportFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,7 +42,12 @@ import java.util.Properties;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(PerTestWireMockServerExtension.class)
 class ConnectionTests implements WireMockServerHelpers {
@@ -115,6 +128,28 @@ class ConnectionTests implements WireMockServerHelpers {
 
         MockOpenSearch.INSTANCE.assertMockOpenSearchConnectionResponse((OpenSearchConnection) con);
         con.close();
+    }
+
+    @Test
+    void testConnectInvalidUsernameOrPassword(final WireMockServer mockServer) throws ResponseException, IOException {
+        TransportFactory mockTransportFactory = mock(TransportFactory.class);
+        when(mockTransportFactory.getTransport(any(), any(), any()))
+                .thenReturn(mock(Transport.class));
+        ProtocolFactory mockProtocolFactory = mock(ProtocolFactory.class);
+        Protocol mockProtocol = mock(Protocol.class);
+
+        when(mockProtocolFactory.getProtocol(any(ConnectionConfig.class), any(Transport.class)))
+                .thenReturn(mockProtocol);
+        when(mockProtocol.connect(anyInt())).thenThrow(new HttpException(401, "Unauthorized"));
+
+        SQLException sqlException = Assertions.assertThrows(SQLException.class,
+                () -> new ConnectionImpl(mock(ConnectionConfig.class),
+                mockTransportFactory, mockProtocolFactory, NoOpLogger.INSTANCE));
+
+        // 28000 is the SQLSTATE for invalid authorization specification
+        // https://docs.oracle.com/cd/E15817_01/appdev.111/b31228/appd.htm
+        assertEquals(sqlException.getSQLState(), "28000");
+        assertEquals(sqlException.getMessage(), "Connection error Unauthorized");
     }
 
     @Test
