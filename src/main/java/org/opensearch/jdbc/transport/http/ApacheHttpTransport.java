@@ -111,6 +111,8 @@ public class ApacheHttpTransport implements HttpTransport, LoggingSource {
             basicCredsProvider.setCredentials(
                     AuthScope.ANY,
                     new UsernamePasswordCredentials(connectionConfig.getUser(), connectionConfig.getPassword()));
+
+            // sets the credentials for authentication on the first request
             if (connectionConfig.usePreemptiveAuth()) {
                 this.preemptiveCreds = basicCredsProvider.getCredentials(AuthScope.ANY);
             }
