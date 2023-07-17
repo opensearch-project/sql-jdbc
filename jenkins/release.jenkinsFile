@@ -14,4 +14,18 @@ standardReleasePipelineWithGenericTrigger(
             mavenArtifactsPath: "$WORKSPACE/repository/",
             autoPublish: true
         )
+        publishToArtifactsProdBucket(
+            assumedRoleName: 'sql-jdbc-upload-role',
+            source: "$WORKSPACE/artifacts.tar.gz",
+            destination: "https://artifacts.opensearch.org/opensearch-clients/jdbc/opensearch-sql-jdbc-${tag}.tar.gz",
+            signingPlatform: 'linux',
+            sigOverwrite: true
+        )
+        publishToArtifactsProdBucket(
+            assumedRoleName: 'sql-jdbc-shadowJar-upload-role',
+            source: "$WORKSPACE/opensearch-sql-jdbc-shadow-*.jar",
+            destination: "https://artifacts.opensearch.org/opensearch-clients/jdbc/opensearch-sql-jdbc-shadow-${tag}.jar",
+            signingPlatform: 'linux',
+            sigOverwrite: true
+        )
     }
