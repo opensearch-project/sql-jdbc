@@ -16,7 +16,7 @@ standardReleasePipelineWithGenericTrigger(
         )
         publishToArtifactsProdBucket(
             assumedRoleName: 'sql-jdbc-upload-role',
-            source: "$WORKSPACE/libs/opensearch-sql-jdbc-shadow-*.jar",
+            source: "$WORKSPACE/shadowJar/opensearch-sql-jdbc-shadow-*.jar",
             destination: "https://artifacts.opensearch.org/opensearch-clients/jdbc/opensearch-sql-jdbc-shadow-${tag}.jar",
             signingPlatform: 'linux',
             sigOverwrite: true
