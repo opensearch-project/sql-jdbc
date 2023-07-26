@@ -21,10 +21,10 @@ jobs:
           cache: gradle
       - name: Build with Gradle
         run: |
-          ./gradlew publishPublishMavenPublicationToLocalRepoRepository && tar -C build -cvf artifacts.tar.gz repository
+          ./gradlew publishPublishMavenPublicationToLocalRepoRepository
       - name: Build shadowJar
-        run:
-          ./gradlew shadowJar
+        run: |
+          ./gradlew shadowJar && tar -C build -cvf artifacts.tar.gz repository libs/opensearch-sql-jdbc-shadow-*.jar
       - name: Draft a release
         uses: softprops/action-gh-release@v1
         with:
@@ -32,4 +32,3 @@ jobs:
           generate_release_notes: true
           files: |
             artifacts.tar.gz
-            build/libs/opensearch-sql-jdbc-shadow-*.jar
