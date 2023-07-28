@@ -21,7 +21,7 @@
 			connStr += "&Region=" + region;
 		}
 	} else { //if (authAttrValue == "auth-user-pass"){
-		connStr += "auth=BASIC&user=" + attr[connectionHelper.attributeUsername] + "&password=" + attr[connectionHelper.attributePassword] + "&trustSelfSigned=" + attr["v-trustSelfSigned"];
+		connStr += "auth=BASIC&trustSelfSigned=" + attr["v-trustSelfSigned"];
 	}
 
 	return [connStr];
