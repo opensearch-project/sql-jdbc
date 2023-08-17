@@ -6,6 +6,9 @@
 
 package org.opensearch.jdbc.transport.http;
 
+import org.apache.http.auth.AuthenticationException;
+import org.apache.http.auth.Credentials;
+import org.apache.http.impl.auth.BasicScheme;
 import org.opensearch.jdbc.auth.AuthenticationType;
 import org.opensearch.jdbc.config.ConnectionConfig;
 import org.opensearch.jdbc.logging.Logger;
@@ -64,12 +67,14 @@ public class ApacheHttpTransport implements HttpTransport, LoggingSource {
 
     private RequestConfig requestConfig;
     private CloseableHttpClient httpClient;
+    private Credentials preemptiveCreds;
 
     public ApacheHttpTransport(ConnectionConfig connectionConfig, Logger log, String userAgent) throws TransportException {
         this.host = connectionConfig.getHost();
         this.port = connectionConfig.getPort();
         this.scheme = connectionConfig.isUseSSL() ? "https" : "http";
         this.path = connectionConfig.getPath();
+        this.preemptiveCreds = null;
 
         updateRequestConfig();
 
@@ -106,6 +111,11 @@ public class ApacheHttpTransport implements HttpTransport, LoggingSource {
             basicCredsProvider.setCredentials(
                     AuthScope.ANY,
                     new UsernamePasswordCredentials(connectionConfig.getUser(), connectionConfig.getPassword()));
+
+            // sets the credentials for authentication on the first request
+            if (connectionConfig.usePreemptiveAuth()) {
+                this.preemptiveCreds = basicCredsProvider.getCredentials(AuthScope.ANY);
+            }
             httpClientBuilder.setDefaultCredentialsProvider(basicCredsProvider);
 
         } else if (connectionConfig.getAuthenticationType() == AuthenticationType.AWS_SIGV4) {
@@ -239,8 +249,12 @@ public class ApacheHttpTransport implements HttpTransport, LoggingSource {
             HttpGet request = new HttpGet(uri);
             request.setHeaders(headers);
             request.setConfig(getRequestConfig());
+
+            if (this.preemptiveCreds != null) {
+                request.addHeader(new BasicScheme().authenticate(this.preemptiveCreds, request, null));
+            }
             return httpClient.execute(request);
-        } catch (IOException e) {
+        } catch (IOException | AuthenticationException e) {
             throw new TransportException(e);
         }
     }
