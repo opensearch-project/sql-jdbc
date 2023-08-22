@@ -9,11 +9,11 @@ standardReleasePipelineWithGenericTrigger(
     causeString: 'A tag was cut on opensearch-project/sql-jdbc repository causing this workflow to run',
     downloadReleaseAsset: true,
     publishRelease: true) {
-//         publishToMaven(
-//             signingArtifactsPath: "$WORKSPACE/repository/",
-//             mavenArtifactsPath: "$WORKSPACE/repository/",
-//             autoPublish: true
-//         )
+        publishToMaven(
+            signingArtifactsPath: "$WORKSPACE/repository/",
+            mavenArtifactsPath: "$WORKSPACE/repository/",
+            autoPublish: true
+        )
         publishToArtifactsProdBucket(
             assumedRoleName: 'sql-jdbc-upload-role',
             source: "$WORKSPACE/shadowJar/opensearch-sql-jdbc-shadow-${tag}.jar",
