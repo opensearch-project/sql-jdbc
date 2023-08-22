@@ -92,7 +92,7 @@ static def getShadowPath(String path) {
 }
 
 shadowJar {
-    baseName = rootProject.name
+    baseName = rootProject.name + "-shadow"
     classifier = ''
     exclude 'META-INF/maven/commons-*/**'
     exclude 'META-INF/maven/org.apache.*/**'
