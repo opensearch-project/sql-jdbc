@@ -15,9 +15,8 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '4.0.1'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'jacoco'
-    id 'maven'
     id 'maven-publish'
     id 'signing'
 }
@@ -25,7 +24,7 @@ plugins {
 group 'org.opensearch.driver'
 
 // keep version in sync with version in Driver source
-version '1.4.0.1'
+version '1.4.0.2'
 
 boolean snapshot = "true".equals(System.getProperty("build.snapshot", "false"));
 if (snapshot) {
@@ -33,7 +32,7 @@ if (snapshot) {
 }
 
 jacoco {
-    toolVersion = "0.8.3"
+    toolVersion = "0.8.11"
 }
 
 sourceCompatibility = 8
@@ -52,11 +51,11 @@ dependencies {
 
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.3.1')
     testImplementation('org.junit.jupiter:junit-jupiter-params:5.3.1')
-    testImplementation('com.github.tomakehurst:wiremock:3.0.0-beta-2')
-    testImplementation('org.mockito:mockito-core:2.23.0')
+    testImplementation('com.github.tomakehurst:wiremock-jre8-standalone:2.35.1')
+    testImplementation('org.mockito:mockito-core:4.11.0')
     testImplementation('org.junit.jupiter:junit-jupiter-engine:5.3.1')
     testImplementation('org.junit-pioneer:junit-pioneer:0.3.0')
-    testImplementation('org.eclipse.jetty:jetty-server:11.0.14')
+    testImplementation('org.eclipse.jetty:jetty-server:11.0.19')
 
     // Enforce wiremock to use latest guava and json-smart
     testImplementation('com.google.guava:guava:32.0.1-jre')
@@ -91,9 +90,15 @@ static def getShadowPath(String path) {
     return 'org.opensearch.sql.jdbc.shadow.' + path
 }
 
+jar {
+    enabled = false
+    dependsOn(shadowJar { archiveClassifier = null })
+}
+
 shadowJar {
-    baseName = rootProject.name + "-shadow"
-    classifier = ''
+    archiveBaseName = rootProject.name + "-shadow"
+    archiveClassifier = null
+
     exclude 'META-INF/maven/commons-*/**'
     exclude 'META-INF/maven/org.apache.*/**'
     exclude 'META-INF/maven/joda-time/**'
@@ -118,12 +123,12 @@ test {
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar) {
-    classifier "javadoc"
+    archiveClassifier = "javadoc"
     from javadoc.destinationDir
 }
 
@@ -215,12 +220,12 @@ signing {
 }
 
 jacoco {
-    toolVersion = "0.8.3"
+    toolVersion = "0.8.11"
 }
 
 jacocoTestReport {
     reports {
-        html.enabled true
+        html.required = true
     }
 }
 test.finalizedBy(project.tasks.jacocoTestReport)
@@ -238,11 +243,14 @@ jacocoTestCoverageVerification {
 configurations.all {
     // fixes https://www.mend.io/vulnerability-database/CVE-2023-24998
     resolutionStrategy.force 'commons-fileupload:commons-fileupload:1.5'
-    resolutionStrategy.force 'org.eclipse.jetty:jetty-client:11.0.14'
-    resolutionStrategy.force 'org.eclipse.jetty:jetty-servlets:11.0.14'
-    resolutionStrategy.force 'org.eclipse.jetty:jetty-webapp:11.0.14'
+    resolutionStrategy.force 'org.eclipse.jetty:jetty-client:11.0.19'
+    resolutionStrategy.force 'org.eclipse.jetty:jetty-servlets:11.0.19'
+    resolutionStrategy.force 'org.eclipse.jetty:jetty-webapp:11.0.19'
+    resolutionStrategy.force 'org.eclipse.jetty:jetty-xml:11.0.19'
 }
 
-
+tasks.withType(GenerateModuleMetadata) {
+    dependsOn javadocJar, sourcesJar
+}
 
 check.dependsOn jacocoTestCoverageVerification
