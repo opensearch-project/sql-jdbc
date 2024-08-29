@@ -25,5 +25,10 @@ public enum AuthenticationType {
     /**
      * AWS Signature V4
      */
-    AWS_SIGV4;
+    AWS_SIGV4,
+
+    /**
+     * AWS Signature V4 for AOSS Serverless collection
+     */
+    AWS_SIGV4_SERVERLESS;
 }

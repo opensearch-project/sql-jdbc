@@ -6,6 +6,7 @@
 
 package org.opensearch.jdbc;
 
+import org.opensearch.jdbc.auth.AuthenticationType;
 import org.opensearch.jdbc.config.ConnectionConfig;
 import org.opensearch.jdbc.internal.JdbcWrapper;
 import org.opensearch.jdbc.internal.Version;
@@ -83,21 +84,22 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
 
         log.debug(() -> logMessage("Initialized Transport: %s, Protocol: %s", transport, protocol));
 
-        try {
-            ConnectionResponse connectionResponse = this.protocol.connect(connectionConfig.getLoginTimeout() * 1000);
-            this.clusterMetadata = connectionResponse.getClusterMetadata();
-            this.open = true;
-        } catch (HttpException ex) {
-            if (ex.getStatusCode() == 401) {
-                logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(),
-                    INCORRECT_CREDENTIALS_SQLSTATE, ex));
-            } else {
+        if (connectionConfig.getAuthenticationType() != AuthenticationType.AWS_SIGV4_SERVERLESS) {
+            try {
+                ConnectionResponse connectionResponse = this.protocol.connect(connectionConfig.getLoginTimeout() * 1000);
+                this.clusterMetadata = connectionResponse.getClusterMetadata();
+                this.open = true;
+            } catch (HttpException ex) {
+                if (ex.getStatusCode() == 401) {
+                    logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(),
+                            INCORRECT_CREDENTIALS_SQLSTATE, ex));
+                } else {
+                    logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
+                }
+            } catch (ResponseException | IOException ex) {
                 logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
             }
-        } catch (ResponseException | IOException ex) {
-            logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
         }
-
     }
 
     public String getUser() {

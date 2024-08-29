@@ -521,7 +521,7 @@ public class ConnectionConfig {
                 throw new ConnectionPropertyException(authConnectionProperty.getKey(),
                         "Basic authentication requires a valid username but none was provided.");
 
-            } else if (authenticationType == AuthenticationType.AWS_SIGV4 &&
+            } else if ((authenticationType == AuthenticationType.AWS_SIGV4 || authenticationType == AuthenticationType.AWS_SIGV4_SERVERLESS) &&
                     regionConnectionProperty.getValue() == null) {
 
                 // aws sdk auto-detection does not work for AWS ES endpoints

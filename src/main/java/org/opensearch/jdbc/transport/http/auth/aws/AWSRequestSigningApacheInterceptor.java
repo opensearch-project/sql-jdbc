@@ -7,7 +7,6 @@
 package org.opensearch.jdbc.transport.http.auth.aws;
 
 import com.amazonaws.DefaultRequest;
-import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.Signer;
 import com.amazonaws.http.HttpMethodName;
@@ -23,13 +22,10 @@ import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HttpContext;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import static org.apache.http.protocol.HttpCoreContext.HTTP_TARGET_HOST;
 
@@ -113,18 +109,31 @@ public class AWSRequestSigningApacheInterceptor implements HttpRequestIntercepto
         if (request instanceof HttpEntityEnclosingRequest) {
             HttpEntityEnclosingRequest httpEntityEnclosingRequest =
                     (HttpEntityEnclosingRequest) request;
-            if (httpEntityEnclosingRequest.getEntity() != null) {
+
+            if (httpEntityEnclosingRequest.getEntity() == null) {
+                signableRequest.setContent(new ByteArrayInputStream(new byte[0]));
+            } else {
                 signableRequest.setContent(httpEntityEnclosingRequest.getEntity().getContent());
             }
         }
+
         signableRequest.setParameters(nvpToMapParams(uriBuilder.getQueryParams()));
-        signableRequest.setHeaders(headerArrayToMap(request.getAllHeaders()));
+
+        Map<String, String> cleanedHeadersBeforeSign = headerArrayToMap(request.getAllHeaders());
+        signableRequest.setHeaders(cleanedHeadersBeforeSign);
 
         // Sign it
         signer.sign(signableRequest, awsCredentialsProvider.getCredentials());
 
         // Now copy everything back
+        Header[] headers = request.getHeaders("content-length");
         request.setHeaders(mapToHeaderArray(signableRequest.getHeaders()));
+        if (headers != null) {
+            Arrays.stream(headers)
+                    .filter(h -> !"0".equals(h.getValue()))
+                    .forEach(h -> request.addHeader(h));
+        }
+
         if (request instanceof HttpEntityEnclosingRequest) {
             HttpEntityEnclosingRequest httpEntityEnclosingRequest =
                     (HttpEntityEnclosingRequest) request;
@@ -172,8 +181,7 @@ public class AWSRequestSigningApacheInterceptor implements HttpRequestIntercepto
      */
     private static boolean skipHeader(final Header header) {
         return ("content-length".equalsIgnoreCase(header.getName())
-                && "0".equals(header.getValue())) // Strip Content-Length: 0
-                || "host".equalsIgnoreCase(header.getName()); // Host comes from endpoint
+                || "host".equalsIgnoreCase(header.getName())); // Host comes from endpoint
     }
 
     /**

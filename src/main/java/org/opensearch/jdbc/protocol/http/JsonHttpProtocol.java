@@ -67,9 +67,9 @@ public class JsonHttpProtocol implements Protocol {
     @Override
     public ConnectionResponse connect(int timeout) throws ResponseException, IOException {
         try (CloseableHttpResponse response = transport.doGet(
-                "/",
-                defaultEmptyRequestBodyJsonHeaders,
-                null, timeout)) {
+                    "/",
+                     defaultEmptyRequestBodyJsonHeaders,
+                    null, timeout)) {
 
             return jsonHttpResponseHandler.handleResponse(response, this::processConnectionResponse);
 
@@ -79,10 +79,10 @@ public class JsonHttpProtocol implements Protocol {
     @Override
     public QueryResponse execute(QueryRequest request) throws ResponseException, IOException {
         try (CloseableHttpResponse response = transport.doPost(
-                sqlContextPath,
-                defaultJsonHeaders,
-                defaultJdbcParams,
-                buildQueryRequestBody(request), 0)) {
+                    sqlContextPath,
+                    defaultJsonHeaders,
+                    defaultJdbcParams,
+                    buildQueryRequestBody(request), 0)) {
 
             return jsonHttpResponseHandler.handleResponse(response, this::processQueryResponse);
 
