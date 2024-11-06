@@ -49,6 +49,7 @@ import java.sql.SQLXML;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.sql.JDBCType;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -579,10 +580,24 @@ public class ResultSetImpl implements ResultSet, JdbcWrapper, LoggingSource {
 
     protected <T> T getObjectX(int columnIndex, Class<T> javaClass, Map<String, Object> conversionParams) throws SQLException {
         final Object value = getColumn(columnIndex);
-        final TypeConverter tc = TypeConverters.getInstance(getColumnMetaData(columnIndex).getOpenSearchType().getJdbcType());
+        // Change made to identify if value is of type array since it isn't an official supported field type
+
+        JDBCType trueJdbcType = getColumnMetaData(columnIndex).getOpenSearchType().getJdbcType();
+
+        if (javaClass == Array.class) {
+            trueJdbcType = JDBCType.ARRAY;
+            if (conversionParams == null) {
+                conversionParams = new HashMap<String, Object>();
+            }
+            conversionParams.put("baseType", getColumnMetaData(columnIndex).getOpenSearchType().getJdbcType());
+        }
+
+        final TypeConverter tc = TypeConverters.getInstance(trueJdbcType);
+
         if (null == tc) {
             throw new SQLException("Conversion from " + getColumnMetaData(columnIndex).getOpenSearchType() + " not supported.");
         }
+
         return tc.convert(value, javaClass, conversionParams);
     }
 
@@ -1007,7 +1022,10 @@ public class ResultSetImpl implements ResultSet, JdbcWrapper, LoggingSource {
 
     @Override
     public Array getArray(int columnIndex) throws SQLException {
-        throw new SQLFeatureNotSupportedException("Array is not supported");
+        log.debug(() -> logEntry("getArray (%s, %s)", columnIndex, Array.class));
+        Array value = getObjectX(columnIndex, Array.class);
+        log.debug(() -> logExit("getArray", value));
+        return value;
     }
 
     @Override
@@ -1050,7 +1068,10 @@ public class ResultSetImpl implements ResultSet, JdbcWrapper, LoggingSource {
 
     @Override
     public Array getArray(String columnLabel) throws SQLException {
-        throw new SQLFeatureNotSupportedException("Array is not supported");
+        log.debug(() -> logEntry("getArray (%s, %s)", columnLabel, Array.class));
+        Array value = getObjectX(getColumnIndex(columnLabel), Array.class);
+        log.debug(() -> logExit("getArray", value));
+        return value;    
     }
 
     @Override

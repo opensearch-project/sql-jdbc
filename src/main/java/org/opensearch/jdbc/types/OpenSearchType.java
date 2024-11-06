@@ -6,8 +6,10 @@
 
 package org.opensearch.jdbc.types;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.JDBCType;
+import java.sql.Struct;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -61,7 +63,7 @@ public enum OpenSearchType {
     STRING(JDBCType.VARCHAR, String.class, Integer.MAX_VALUE, 0, false),
     IP(JDBCType.VARCHAR, String.class, 15, 0, false),
     NESTED(JDBCType.STRUCT, null, 0, 0, false),
-    OBJECT(JDBCType.STRUCT, null, 0, 0, false),
+    OBJECT(JDBCType.STRUCT, Struct.class, 0, 0, false),
     DATE(JDBCType.DATE, Date.class, 10, 10, false),
     TIME(JDBCType.TIME, Time.class, 8, 8, false),
     DATETIME(JDBCType.TIMESTAMP, Timestamp.class, 29, 29, false),
@@ -69,7 +71,9 @@ public enum OpenSearchType {
     BINARY(JDBCType.VARBINARY, String.class, Integer.MAX_VALUE, 0, false),
     NULL(JDBCType.NULL, null, 0, 0, false),
     UNDEFINED(JDBCType.NULL, null, 0, 0, false),
-    UNSUPPORTED(JDBCType.OTHER, null, 0, 0, false);
+    UNSUPPORTED(JDBCType.OTHER, null, 0, 0, false),
+    ARRAY(JDBCType.ARRAY, Array.class, 0, 0, false);
+
 
     private static final Map<JDBCType, OpenSearchType> jdbcTypeToOpenSearchTypeMap;
 
@@ -91,6 +95,7 @@ public enum OpenSearchType {
         jdbcTypeToOpenSearchTypeMap.put(JDBCType.DATE, DATE);
         jdbcTypeToOpenSearchTypeMap.put(JDBCType.VARBINARY, BINARY);
         jdbcTypeToOpenSearchTypeMap.put(JDBCType.STRUCT, OBJECT);
+        jdbcTypeToOpenSearchTypeMap.put(JDBCType.ARRAY, ARRAY);
     }
 
     /**
