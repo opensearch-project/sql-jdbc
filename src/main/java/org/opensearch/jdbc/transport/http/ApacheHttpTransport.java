@@ -6,13 +6,14 @@
 
 package org.opensearch.jdbc.transport.http;
 
+import com.amazonaws.auth.AWS4Signer;
 import org.opensearch.jdbc.auth.AuthenticationType;
 import org.opensearch.jdbc.config.ConnectionConfig;
 import org.opensearch.jdbc.logging.Logger;
 import org.opensearch.jdbc.logging.LoggingSource;
 import org.opensearch.jdbc.transport.TransportException;
 import org.opensearch.jdbc.transport.http.auth.aws.AWSRequestSigningApacheInterceptor;
-import com.amazonaws.auth.AWS4Signer;
+import com.amazonaws.auth.AWS4UnsignedPayloadSigner;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import org.apache.http.Header;
@@ -121,8 +122,21 @@ public class ApacheHttpTransport implements HttpTransport, LoggingSource {
                             signer,
                             provider,
                             connectionConfig.tunnelHost()));
-        }
+        } else if (connectionConfig.getAuthenticationType() == AuthenticationType.AWS_SIGV4_SERVERLESS) {
+            AWS4UnsignedPayloadSigner signer = new AWS4UnsignedPayloadSigner();
+            signer.setServiceName("aoss");
+            signer.setRegionName(connectionConfig.getRegion());
 
+            AWSCredentialsProvider provider = connectionConfig.getAwsCredentialsProvider() != null ?
+                    connectionConfig.getAwsCredentialsProvider() : new DefaultAWSCredentialsProviderChain();
+
+            httpClientBuilder.addInterceptorLast(
+                    new AWSRequestSigningApacheInterceptor(
+                            "aoss",
+                            signer,
+                            provider,
+                            null));
+        }
         // TODO - can apply settings retry & backoff
         this.httpClient = httpClientBuilder.build();
     }
