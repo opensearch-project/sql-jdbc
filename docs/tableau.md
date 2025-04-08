@@ -3,7 +3,7 @@
 ## Download and Installation
 
 * Download and install [Tableau Desktop](https://www.tableau.com/en-ca/products/desktop/download).
-* Install and configure [OpenSearch](https://docs-beta.opensearch.org/opensearch/install/index/).
+* Install and configure [OpenSearch](https://opensearch.org/docs/latest/install-and-configure/install-opensearch/index/).
 * Download the [OpenSearch JDBC Driver](../README.md#download-and-installation).
 
 ## Setup
@@ -85,4 +85,4 @@ You will need:
 3. Double click or drag desired fields under **Dimensions**.
 4. Select available visualization under **Show Me**.
 
-![Image of Tableau Graph](img/tableau_graph.PNG)
+![Image of Tableau Graph](img/tableau_graph.png)

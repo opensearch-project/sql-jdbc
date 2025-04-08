@@ -1,26 +1,26 @@
 ## 2020-04-29, Version 1.6.1.0
 ### Enhancement
-* Enhancement [#72](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/72): Use default holdability for prepareStatement. (issue: [#63](https://github.com/opendistro-for-elasticsearch/sql-jdbc/issues/63))
+* Enhancement [#72](https://github.com/amazon-archives/sql-jdbc/pull/72): Use default holdability for prepareStatement. (issue: [#63](https://github.com/amazon-archives/sql-jdbc/issues/63))
 
 ## 2020-03-24, Version 1.6.0.0
 ### Enhancement
-* Enhancement [#49](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/49): Implementation of the execute method in the PreparedStatementImpl class (issue: [#62](https://github.com/opendistro-for-elasticsearch/sql-jdbc/issues/62))
+* Enhancement [#49](https://github.com/amazon-archives/sql-jdbc/pull/49): Implementation of the execute method in the PreparedStatementImpl class (issue: [#62](https://github.com/amazon-archives/sql-jdbc/issues/62))
 
 ### Bugfix
-* BugFix [#68](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/68): Change the request body encoding to UTF-8 (issues: [#54](https://github.com/opendistro-for-elasticsearch/sql-jdbc/issues/54), [#66](https://github.com/opendistro-for-elasticsearch/sql-jdbc/issues/66), [#opendistro for elasticsearch/sql#392](https://github.com/opendistro-for-elasticsearch/sql/issues/392) )
+* BugFix [#68](https://github.com/amazon-archives/sql-jdbc/pull/68): Change the request body encoding to UTF-8 (issues: [#54](https://github.com/amazon-archives/sql-jdbc/issues/54), [#66](https://github.com/amazon-archives/sql-jdbc/issues/66), [#opendistro for elasticsearch/sql#392](https://github.com/opendistro-for-elasticsearch/sql/issues/392) )
 
 ## 2020-1-26, Version 1.4.0
 
 ### Features
 
 #### Documentation
-* Feature [#37](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/37): Tableau documentation
-* Feature [#35](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/35): Add documentation for connecting Tableau with OpenSearch using JDBC Driver
+* Feature [#37](https://github.com/amazon-archives/sql-jdbc/pull/37): Tableau documentation
+* Feature [#35](https://github.com/amazon-archives/sql-jdbc/pull/35): Add documentation for connecting Tableau with OpenSearch using JDBC Driver
 
 ### Bugfixes
-* BugFix [#47](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/47): Result set metadata returns Elasticsearch type (issue: [#43](https://github.com/opendistro-for-elasticsearch/sql-jdbc/issues/43))
-* BugFix [#45](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/45): Add missing Elasticsearch type : object (issue: [#44](https://github.com/opendistro-for-elasticsearch/sql-jdbc/issues/43))
-* BugFix [#32](https://github.com/opendistro-for-elasticsearch/sql-jdbc/pull/32): Added IP type and mapped with JDBC type of varchar
+* BugFix [#47](https://github.com/amazon-archives/sql-jdbc/pull/47): Result set metadata returns Elasticsearch type (issue: [#43](https://github.com/amazon-archives/sql-jdbc/issues/43))
+* BugFix [#45](https://github.com/amazon-archives/sql-jdbc/pull/45): Add missing Elasticsearch type : object (issue: [#44](https://github.com/amazon-archives/sql-jdbc/issues/43))
+* BugFix [#32](https://github.com/amazon-archives/sql-jdbc/pull/32): Added IP type and mapped with JDBC type of varchar
 
 ## 2019-10-29, Version 1.3.0
 
@@ -58,7 +58,7 @@ No update in this release.
 
 ### Notable Changes
 
-* Feature [#4](https://github.com/opendistro-for-elasticsearch/sql-jdbc/issues/4): Add support for Elasticsearch 6.6
+* Feature [#4](https://github.com/amazon-archives/sql-jdbc/issues/4): Add support for Elasticsearch 6.6
 
 
 ## 2019-03-11, Version 0.7.0
