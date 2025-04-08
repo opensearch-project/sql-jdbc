@@ -19,7 +19,7 @@ jobs:
       working-directory: bi-connectors/TableauConnector/src
     - name: Upload Tableau JDBC connector
       if: steps.pack-tableau-jdbc.outcome == 'success'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: TableauConnectors
         path: bi-connectors/TableauConnector/src/opensearch_sql_jdbc.taco
