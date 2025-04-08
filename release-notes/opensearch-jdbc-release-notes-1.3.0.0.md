@@ -1,6 +1,6 @@
 ## 2023-05-10, Version 1.3.0.0
 ### Features
-* Adding Struct Support ([#73]((https://github.com/opensearch-project/sql-jdbc/pull/73))
+* Adding Struct Support ([#73](https://github.com/opensearch-project/sql-jdbc/pull/73))
 
 ### Enhancements
 
