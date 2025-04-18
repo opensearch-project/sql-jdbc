@@ -6,26 +6,25 @@
 
 package org.opensearch.jdbc.test;
 
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SslConnectionFactory;
-import org.opensearch.jdbc.internal.util.UrlParser;
-import org.opensearch.jdbc.test.mocks.MockOpenSearch;
 import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.NetworkTrafficServerConnector;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.opensearch.jdbc.internal.util.UrlParser;
+import org.opensearch.jdbc.test.mocks.MockOpenSearch;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class TLSServer {
 
@@ -109,15 +108,15 @@ public class TLSServer {
 
     public static class MockOpenSearchConnectionHandler extends AbstractHandler {
         @Override
-        public void handle(
-                String target,
-                Request baseRequest,
-                HttpServletRequest request,
-                HttpServletResponse response) throws IOException, ServletException {
-            response.setContentType("application/json");
+        public boolean handle(Request request, Response response, Callback callback) throws Exception {
+            response.getHeaders().add("Content-Type", "application/json");
             response.setStatus(200);
-            baseRequest.setHandled(true);
-            response.getWriter().write(MockOpenSearch.INSTANCE.getConnectionResponse());
+
+            // Write the response content
+            byte[] content = MockOpenSearch.INSTANCE.getConnectionResponse().getBytes();
+            response.write(true, ByteBuffer.wrap(content), callback);
+
+            return true;
         }
     }
 
