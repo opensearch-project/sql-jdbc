@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Set up JDK 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@17f84c3641ba7b8f6deff6309fc4c864478f5d62 # v3
         with:
           java-version: 11
           distribution: 'temurin'
@@ -29,7 +29,7 @@ jobs:
           mv build/libs/opensearch-sql-jdbc-shadow-*.jar build/shadowJar
           tar -C build -cvf artifacts.tar.gz repository shadowJar
       - name: Draft a release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         with:
           draft: true
           generate_release_notes: true
