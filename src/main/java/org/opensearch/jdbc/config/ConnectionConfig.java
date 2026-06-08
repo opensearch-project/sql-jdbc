@@ -223,9 +223,9 @@ public class ConnectionConfig {
                 ", requestCompression=" + requestCompression +
                 ", authenticationType=" + authenticationType +
                 ", awsCredentialsProvider=" + awsCredentialsProvider +
-            ", awsCredentialsProvider=" + awsCredentialsProvider +
-            ", awsCredentialsProvider=" + awsCredentialsProvider +
-            ", awsCredentialsProvider=" + awsCredentialsProvider +
+                ", awsAccessKey=" + awsAccessKey +
+                ", awsSecretKey=" + awsSecretKey +
+                ", awsSessionToken=" + awsSessionToken +
                 ", region='" + region + '\'' +
                 ", logLevel=" + logLevel +
                 ", keyStoreLocation='" + keyStoreLocation + '\'' +
