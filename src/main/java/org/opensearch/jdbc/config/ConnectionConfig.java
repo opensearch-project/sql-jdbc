@@ -35,6 +35,9 @@ public class ConnectionConfig {
     private boolean requestCompression;
     private AuthenticationType authenticationType;
     private AWSCredentialsProvider awsCredentialsProvider;
+    private String awsAccessKey;
+    private String awsSecretKey;
+    private String awsSessionToken;
     private String region;
     private LogLevel logLevel;
 
@@ -68,6 +71,9 @@ public class ConnectionConfig {
         this.requestCompression = builder.getRequestCompressionProperty().getValue();
         this.authenticationType = builder.getAuthConnectionProperty().getValue();
         this.awsCredentialsProvider = builder.getAwsCredentialProvider().getValue();
+        this.awsAccessKey = builder.getAwsAccessKeyProperty().getValue();
+        this.awsSecretKey = builder.getAwsSecretKeyProperty().getValue();
+        this.awsSessionToken = builder.getAwsSessionTokenProperty().getValue();
         this.region = builder.getRegionConnectionProperty().getValue();
 
         this.keyStoreLocation = builder.getKeyStoreLocationConnectionProperty().getValue();
@@ -144,6 +150,18 @@ public class ConnectionConfig {
         return awsCredentialsProvider;
     }
 
+    public String getAwsAccessKey() {
+        return awsAccessKey;
+    }
+
+    public String getAwsSecretKey() {
+        return awsSecretKey;
+    }
+
+    public String getAwsSessionToken() {
+        return awsSessionToken;
+    }
+
     public String getRegion() {
         return region;
     }
@@ -205,6 +223,9 @@ public class ConnectionConfig {
                 ", requestCompression=" + requestCompression +
                 ", authenticationType=" + authenticationType +
                 ", awsCredentialsProvider=" + awsCredentialsProvider +
+            ", awsCredentialsProvider=" + awsCredentialsProvider +
+            ", awsCredentialsProvider=" + awsCredentialsProvider +
+            ", awsCredentialsProvider=" + awsCredentialsProvider +
                 ", region='" + region + '\'' +
                 ", logLevel=" + logLevel +
                 ", keyStoreLocation='" + keyStoreLocation + '\'' +
@@ -259,6 +280,9 @@ public class ConnectionConfig {
 
         private AwsCredentialsProviderProperty awsCredentialsProviderProperty
                 = new AwsCredentialsProviderProperty();
+        private AwsAccessKeyProperty awsAccessKeyProperty = new AwsAccessKeyProperty();
+        private AwsSecretKeyProperty awsSecretKeyProperty = new AwsSecretKeyProperty();
+        private AwsSessionTokenProperty awsSessionTokenProperty = new AwsSessionTokenProperty();
 
         private HostnameVerificationConnectionProperty hostnameVerificationConnectionProperty
                 = new HostnameVerificationConnectionProperty();
@@ -280,6 +304,9 @@ public class ConnectionConfig {
                 requestCompressionProperty,
                 authConnectionProperty,
                 awsCredentialsProviderProperty,
+                awsAccessKeyProperty,
+                awsSecretKeyProperty,
+                awsSessionTokenProperty,
                 regionConnectionProperty,
                 keyStoreLocationConnectionProperty,
                 keyStorePasswordConnectionProperty,
@@ -350,6 +377,18 @@ public class ConnectionConfig {
 
         public AwsCredentialsProviderProperty getAwsCredentialProvider() {
             return awsCredentialsProviderProperty;
+        }
+
+        public AwsAccessKeyProperty getAwsAccessKeyProperty() {
+            return awsAccessKeyProperty;
+        }
+
+        public AwsSecretKeyProperty getAwsSecretKeyProperty() {
+            return awsSecretKeyProperty;
+        }
+
+        public AwsSessionTokenProperty getAwsSessionTokenProperty() {
+            return awsSessionTokenProperty;
         }
 
         public RegionConnectionProperty getRegionConnectionProperty() {
