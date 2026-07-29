@@ -20,7 +20,6 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Peng Huo          | [penghuo](https://github.com/penghuo)               | Amazon      |
 | Sean Kao          | [seankao-az](https://github.com/seankao-az)         | Amazon      |
 | Anirudha Jadhav   | [anirudha](https://github.com/anirudha)             | Amazon      |
-| Max Ksyunz        | [MaxKsyunz](https://github.com/MaxKsyunz)           | Improving   |
 | Yury Fridlyand    | [Yury-Fridlyand](https://github.com/Yury-Fridlyand) | Improving   |
 | Andrew Carbonetto | [acarbonetto](https://github.com/acarbonetto)       | Improving   |
 | Forest Vey        | [forestmvey](https://github.com/forestmvey)         | Improving   |
@@ -36,3 +35,4 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Eugene Lee        | [eugenesk24](https://github.com/eugenesk24)             | Amazon      |
 | Zhongnan Su       | [zhongnansu](https://github.com/zhongnansu)             | Amazon      |
 | Chloe Zhang       | [chloe-zh](https://github.com/chloe-zh)                 | Amazon      |
+| Max Ksyunz        | [MaxKsyunz](https://github.com/MaxKsyunz)               | Improving   |
