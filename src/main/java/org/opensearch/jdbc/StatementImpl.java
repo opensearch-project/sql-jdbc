@@ -85,7 +85,7 @@ public class StatementImpl implements Statement, JdbcWrapper, LoggingSource {
     @Override
     public int executeUpdate(String sql) throws SQLException {
         checkOpen();
-        throw new SQLFeatureNotSupportedException("Updates are not supported.");
+        throw updatesNotSupportedException();
     }
 
     @Override
