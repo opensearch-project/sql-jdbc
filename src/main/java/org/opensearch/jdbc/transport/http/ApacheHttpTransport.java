@@ -6,16 +6,13 @@
 
 package org.opensearch.jdbc.transport.http;
 
-import com.amazonaws.auth.AWS4Signer;
+import com.amazonaws.auth.*;
 import org.opensearch.jdbc.auth.AuthenticationType;
 import org.opensearch.jdbc.config.ConnectionConfig;
 import org.opensearch.jdbc.logging.Logger;
 import org.opensearch.jdbc.logging.LoggingSource;
 import org.opensearch.jdbc.transport.TransportException;
 import org.opensearch.jdbc.transport.http.auth.aws.AWSRequestSigningApacheInterceptor;
-import com.amazonaws.auth.AWS4UnsignedPayloadSigner;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import org.apache.http.Header;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -114,8 +111,23 @@ public class ApacheHttpTransport implements HttpTransport, LoggingSource {
             signer.setServiceName("es");
             signer.setRegionName(connectionConfig.getRegion());
 
-            AWSCredentialsProvider provider = connectionConfig.getAwsCredentialsProvider() != null ?
-                    connectionConfig.getAwsCredentialsProvider() : new DefaultAWSCredentialsProviderChain();
+            AWSCredentialsProvider provider;
+            if (connectionConfig.getAwsCredentialsProvider() != null) {
+                provider = connectionConfig.getAwsCredentialsProvider();
+            } else if (connectionConfig.getAwsSessionToken() != null) {
+                AWSCredentials credentials = new BasicSessionCredentials(
+                    connectionConfig.getAwsAccessKey(),
+                    connectionConfig.getAwsSecretKey(),
+                    connectionConfig.getAwsSessionToken());
+                provider = new AWSStaticCredentialsProvider(credentials);
+            } else if (connectionConfig.getAwsAccessKey() != null) {
+                AWSCredentials credentials = new BasicAWSCredentials(
+                    connectionConfig.getAwsAccessKey(),
+                    connectionConfig.getAwsSecretKey());
+                provider = new AWSStaticCredentialsProvider(credentials);
+            } else {
+                provider = new DefaultAWSCredentialsProviderChain();
+            }
             httpClientBuilder.addInterceptorLast(
                     new AWSRequestSigningApacheInterceptor(
                             "es",
